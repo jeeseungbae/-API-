@@ -21,8 +21,8 @@
 
 #### 메인화면
 ![메인화면](./image/front메인화면.png)
-#### Category세부사항
-![Category세부사항](./image/Category세부사항.png)
+#### category세부사항
+![category세부사항](./image/category세부사항.png)
 #### 작품세부사항
 ![작품세부사항](./image/작품세부사항.png)
 #### 제품검색
