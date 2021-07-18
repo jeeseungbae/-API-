@@ -7,6 +7,7 @@
 - gradle
 - Junit 4
 
+<br>
  
 ### 운영방안
 - 간단한 디자인으로 만들어진 front에 RestAPI를 만든다.
@@ -37,3 +38,8 @@
 
 ### 연동 방식
 - H2 database에 연동한다.
+
+
+#### 그 외
+
+[기획_노션](https://www.notion.so/API-f69af0f2826a46e9a6368063e670b1fe)
