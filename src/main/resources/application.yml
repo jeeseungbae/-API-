@@ -1,0 +1,24 @@
+server :
+  port : 8080
+
+spring :
+  h2:
+    console:
+      enabled: true
+      path: /test_db
+
+  datasource:
+    type: org.apache.ibatis.datasource.pooled.PooledDataSource
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:testdb
+    username: test
+    password :
+
+
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+    lazy-loading-enabled: true
+    aggressive-lazy-loading: false
+  mapper-locations: mybatis/**/*.xml
+
