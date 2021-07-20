@@ -9,5 +9,5 @@ import java.util.List;
 @Mapper
 @Repository
 public interface ProductsRepository {
-    List<Products> getUserList();
+    List<Products> getProducts();
 }

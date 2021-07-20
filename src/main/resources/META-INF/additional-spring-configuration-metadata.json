@@ -4,5 +4,5 @@
       "name": "spring.datasource.password.schema",
       "type": "java.lang.String",
       "description": "Description for spring.datasource.password.schema."
-  }
-] }
+    }
+  ] }

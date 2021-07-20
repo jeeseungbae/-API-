@@ -3,10 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
-    <typeAliases>
-        <package name="com.example.orderangement.domain"/>
-    </typeAliases>
     <mappers>
-        <mapper resource="mapper/products.xml"/>
+        <mapper resource="mybatis/mapper/products.xml"/>
     </mappers>
 </configuration>
