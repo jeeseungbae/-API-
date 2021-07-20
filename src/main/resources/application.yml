@@ -1,0 +1,26 @@
+server :
+  port : 8080
+
+spring :
+  h2:
+    console:
+      enabled: true
+      path: /testdb
+
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:testdb
+    username: sa
+    password :
+    generate-unique-name: false
+
+  batch:
+    jdbc:
+      schema: always
+
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+  mapper-locations: mybatis/mapper/**/*.xml
+  type-aliases-package: com.example.ordermanagement.domain
+
