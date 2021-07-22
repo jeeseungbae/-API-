@@ -12,15 +12,13 @@ spring :
     url: jdbc:h2:mem:testdb
     username: sa
     password :
-    generate-unique-name: false
-
+    generate-unique-name: false # 데이터 베이스의 고유 이름 설정 false
   batch:
     jdbc:
       schema: always
 
 mybatis:
   configuration:
-    map-underscore-to-camel-case: true
+    map-underscore-to-camel-case: true # snake case 를 camelcase로 적용
   mapper-locations: mybatis/mapper/**/*.xml
   type-aliases-package: com.example.ordermanagement.domain
-
