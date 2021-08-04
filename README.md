@@ -4,7 +4,7 @@
 
 - java 8
 - springBoot 2.x
-- myBatis
+- JPA
 - gradle
 - Junit 4
 
