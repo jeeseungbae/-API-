@@ -21,7 +21,7 @@ public class AddressApiControllerTests {
     private MockMvc mvc;
 
     @Test
-    @DisplayName("서버에서 Json형태로 요청에 성공한다.")
+    @DisplayName("서버에서 요청에 성공한다.")
     public void findById() throws Exception {
         mvc.perform(get("/address/1"))
                 .andExpect(status().isOk());
