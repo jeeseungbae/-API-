@@ -1,3 +1,9 @@
-insert into PRODUCT(name,price) values('니트',20000);
-insert into PRODUCT(name,price) values('맨투맨',21000);
-insert into PRODUCT(name,price) values('티',22000);
+
+/* Address */
+
+insert into address(content,distinction) values ('서울 중랑구',1);
+insert into address(content,distinction) values ('경기도 수원시',1);
+insert into address(content,distinction) values ('경기도 고양시',2);
+insert into address(content,distinction) values ('경기도 동두천시',2);
+
+

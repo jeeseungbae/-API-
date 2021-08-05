@@ -1,7 +1,7 @@
-DROP TABLE IF EXISTS product;
+DROP TABLE IF EXISTS address;
 
-create table product(
+create table address(
     seq bigint(255) not null auto_increment primary key,
-    name varchar(255) not null,
-    price int(20) not null
+    content varchar(255) not null,
+    distinction int(255) not null
 );

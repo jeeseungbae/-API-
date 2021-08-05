@@ -4,7 +4,7 @@ server :
 spring :
   h2:
     console:
-      enabled: true
+      enabled: true # devtool 에서 설정 해주긴 함
       path: /testdb
 
   datasource:
@@ -23,4 +23,4 @@ spring :
     open-in-view: false  # 웹 요청이 완료 될때까지 영속성을 가진다. -> 성능상 좋지 않다.
     show-sql: true # 콘솔에 jpa 실행 쿼리 보여줌
     hibernate:
-      ddl-auto: none # 변경된 스키마가 있는지 확인만 한다. 있다면 Application 종료
+      ddl-auto: validate
