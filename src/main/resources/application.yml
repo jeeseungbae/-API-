@@ -6,20 +6,16 @@ spring :
     console:
       enabled: true # devtool 에서 설정 해주긴 함
       path: /testdb
-
   datasource:
     driver-class-name: org.h2.Driver
     url: jdbc:h2:mem:testdb;MODE=mysql;
     username: sa
     password :
     generate-unique-name: false # 데이터 베이스의 고유 이름 설정 false
-  #  batch:
-#    jdbc:
-#      schema: always
   jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
-    database: H2
-    generate-ddl: true # hibernate에서 자동으로 DDL을 생성하여, 필요한 Database의 Table설정들을 자동으로 해준다.
+#    database-platform: org.hibernate.dialect.H2Dialect
+#    database: H2
+    generate-ddl: false # hibernate에서 자동으로 DDL을 생성하여, 필요한 Database의 Table설정들을 자동으로 해준다.
     open-in-view: false  # 웹 요청이 완료 될때까지 영속성을 가진다. -> 성능상 좋지 않다.
     show-sql: true # 콘솔에 jpa 실행 쿼리 보여줌
     hibernate:

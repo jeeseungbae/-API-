@@ -1,10 +1,8 @@
 package com.example.ordermanagement.presentation.apiController;
 
 import com.example.ordermanagement.application.service.AddressApiService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.example.ordermanagement.domain.model.Address;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/address")
@@ -16,8 +14,8 @@ public class AddressApiController {
         this.addressApiService = addressApiService;
     }
 
-    @GetMapping("{seq}")
-    public String findById(@PathVariable("seq") Long seq){
+    @GetMapping("/{seq}")
+    public Address findById(@PathVariable("seq") Long seq){
         return addressApiService.findBySeq(seq);
     }
 }
