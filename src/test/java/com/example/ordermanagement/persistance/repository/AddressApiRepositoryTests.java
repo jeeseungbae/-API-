@@ -1,22 +1,17 @@
 package com.example.ordermanagement.persistance.repository;
 
-
 import com.example.ordermanagement.domain.model.Address;
-import org.junit.Before;
-import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.context.junit4.SpringRunner;
-
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.util.Optional;
 
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @DataJpaTest // 자동적으로 롤백
 public class AddressApiRepositoryTests {
 
@@ -30,9 +25,9 @@ public class AddressApiRepositoryTests {
         Assertions.assertTrue(address.isPresent());
 
         address.ifPresent(select->{
-            assertThat(select.getSeq(),is(1L));
-            assertThat(select.getContent(),is("서울 중랑구"));
-            assertThat(select.getDistinction(),is(1));
+            Assertions.assertEquals(select.getSeq(),1L);
+            Assertions.assertEquals(select.getContent(),"서울 중랑구");
+            Assertions.assertEquals(select.getDistinction(),1);
         });
     }
 
