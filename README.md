@@ -6,7 +6,7 @@
 - springBoot 2.x
 - JPA
 - gradle
-- Junit 4
+- Junit 5
 
 <br>
 

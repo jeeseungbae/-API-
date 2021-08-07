@@ -1,19 +1,17 @@
 package com.example.ordermanagement.application.service;
 
-
 import com.example.ordermanagement.domain.model.Address;
 import com.example.ordermanagement.persistance.repository.AddressApiRepository;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
 
 public class AddressApiServiceTests {
@@ -23,7 +21,7 @@ public class AddressApiServiceTests {
     @Mock
     private AddressApiRepository addressApiRepository;
 
-    @Before
+    @BeforeEach
     public void setUp(){
         MockitoAnnotations.openMocks(this);
         // Mock 어노테이션 변수들을 초기화한다. 가짜 객체를 만든다.
@@ -46,14 +44,16 @@ public class AddressApiServiceTests {
     public void findBySeq(){
         Address address = addressApiService.findBySeq(1L);
 
-        assertThat(address.getSeq(),is(1L));
-        assertThat(address.getContent(),is("서울 중랑구"));
-        assertThat(address.getDistinction(),is(1));
+        Assertions.assertEquals(address.getSeq(),1L);
+        Assertions.assertEquals(address.getContent(),"서울 중랑구");
+        Assertions.assertEquals(address.getDistinction(),1);
     }
 
     @DisplayName("NoSuchElementException 오류를 출력한다.")
-    @Test(expected = NoSuchElementException.class)
+    @Test
     public void notFindBySeq(){
-        addressApiService.findBySeq(10L);
+        Assertions.assertThrows(NoSuchElementException.class,()->{
+            addressApiService.findBySeq(10L);
+        });
     }
 }

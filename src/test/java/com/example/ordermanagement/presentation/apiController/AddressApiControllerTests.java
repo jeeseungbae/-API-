@@ -3,18 +3,16 @@ package com.example.ordermanagement.presentation.apiController;
 
 import com.example.ordermanagement.application.service.AddressApiService;
 import com.example.ordermanagement.domain.model.Address;
-import org.h2.message.Trace;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.util.NoSuchElementException;
+import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.BDDMockito.given;
@@ -22,7 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 //ApplicationContext를 만들고 관리하는 작업을 @RunWith(SpringRunner.class)에 설정된 class로 이용하겠다는 뜻
 @WebMvcTest(AddressApiController.class)
 public class AddressApiControllerTests {
@@ -33,7 +31,7 @@ public class AddressApiControllerTests {
     @MockBean
     private AddressApiService addressApiService;
 
-    @Before
+    @BeforeEach
     public void setUp(){
         Address address = Address.builder()
                 .seq(1L)
