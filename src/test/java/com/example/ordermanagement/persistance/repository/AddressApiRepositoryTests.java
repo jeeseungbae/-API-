@@ -9,6 +9,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+
 import java.util.Optional;
 
 
@@ -21,9 +22,9 @@ public class AddressApiRepositoryTests {
     private AddressApiRepository addressApiRepository;
 
     @Nested
-    @DisplayName("정보를 조회한다.")
-    public class FindAddress{
-        @DisplayName("성공 - 단일정보 조회")
+    @DisplayName("단일 정보를 조회한다.")
+    public class FindData{
+        @DisplayName("성공")
         @Test
         public void findById(){
             Optional<Address> address = addressApiRepository.findBySeq(1L);
