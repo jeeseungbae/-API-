@@ -24,4 +24,8 @@ public class AddressApiService {
     public List<Address> findAll(){
         return addressApiRepository.findAll();
     }
+
+    public Address create(Address address){
+        return addressApiRepository.save(address);
+    }
 }

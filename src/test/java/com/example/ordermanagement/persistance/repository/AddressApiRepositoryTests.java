@@ -22,8 +22,29 @@ public class AddressApiRepositoryTests {
     private AddressApiRepository addressApiRepository;
 
     @Nested
+    @DisplayName("주어진 정보를 생성한다.")
+    public class createdData{
+
+        @Test
+        @DisplayName("성공")
+        public void create(){
+            Address resource = Address.builder()
+                    .content("서울 중랑구")
+                    .distinction(1)
+                    .build();
+
+            Address address = addressApiRepository.save(resource);
+
+            Assertions.assertEquals(address.getSeq(),5L);
+            Assertions.assertEquals(address.getContent(),resource.getContent());
+            Assertions.assertEquals(address.getDistinction(),resource.getDistinction());
+        }
+    }
+
+    @Nested
     @DisplayName("단일 정보를 조회한다.")
     public class FindData{
+
         @DisplayName("성공")
         @Test
         public void findById(){
@@ -44,6 +65,5 @@ public class AddressApiRepositoryTests {
             Assertions.assertFalse(address.isPresent());
         }
     }
-
 
 }
