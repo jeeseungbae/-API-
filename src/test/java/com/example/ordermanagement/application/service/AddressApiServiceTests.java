@@ -7,6 +7,8 @@ import org.junit.jupiter.api.*;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.BDDMockito.given;
@@ -24,6 +26,7 @@ public class AddressApiServiceTests {
         MockitoAnnotations.openMocks(this);
         // Mock 어노테이션 변수들을 초기화한다. 가짜 객체를 만든다.
         mockAddressApiRepository();
+        givenAllData();
         addressApiService = new AddressApiService(addressApiRepository);
     }
 
@@ -37,11 +40,38 @@ public class AddressApiServiceTests {
         given(addressApiRepository.findBySeq(1L)).willReturn(Optional.ofNullable(address));
     }
 
-    @Nested
-    @DisplayName("정보를 조회한다.")
-    public class FindAddress{
+    private void givenAllData(){
+        List<Address> addresses = new ArrayList<>();
 
-        @DisplayName("성공 - 단일정보 조회.")
+        Address address = Address.builder()
+                .seq(1L)
+                .build();
+
+        addresses.add(address);
+
+        given(addressApiRepository.findAll()).willReturn(addresses);
+    }
+
+    @Nested
+    @DisplayName("모든 정보를 조회한다.")
+    public class FindAll{
+
+        @Test
+        @DisplayName("성공")
+        public void findAll(){
+            List<Address> addresses = addressApiService.findAll();
+            Assertions.assertFalse(addresses.isEmpty());
+
+            Address address = addresses.get(0);
+            Assertions.assertEquals(address.getSeq(),1L);
+        }
+    }
+
+    @Nested
+    @DisplayName("단일 정보를 조회한다.")
+    public class FindData{
+
+        @DisplayName("성공")
         @Test
         public void findBySeq() {
             Address address = addressApiService.findBySeq(1L);

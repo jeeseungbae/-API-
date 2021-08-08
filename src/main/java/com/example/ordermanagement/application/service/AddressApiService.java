@@ -5,6 +5,8 @@ import com.example.ordermanagement.exception.NoSuchDataException;
 import com.example.ordermanagement.persistance.repository.AddressApiRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class AddressApiService {
 
@@ -17,5 +19,9 @@ public class AddressApiService {
     public Address findBySeq(Long seq){
         return addressApiRepository.findBySeq(seq).orElseThrow(
                 NoSuchDataException::new);
+    }
+
+    public List<Address> findAll(){
+        return addressApiRepository.findAll();
     }
 }
