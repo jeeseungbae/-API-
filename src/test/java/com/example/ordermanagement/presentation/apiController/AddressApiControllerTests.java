@@ -58,7 +58,7 @@ public class AddressApiControllerTests {
 
     private void givenError(){
         given(addressApiService.findBySeq(10L))
-                .willThrow(new NoSuchDataException());
+                .willThrow(new NoSuchDataException(404L));
     }
 
     private void givenAllData(){
