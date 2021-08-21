@@ -18,10 +18,14 @@ public class AddressApiService {
 
     public Address findBySeq(Long seq){
         return addressApiRepository.findBySeq(seq).orElseThrow(
-                NoSuchDataException::new);
+                ()->new NoSuchDataException(404L));
     }
 
     public List<Address> findAll(){
         return addressApiRepository.findAll();
+    }
+
+    public Address create(Address address){
+        return addressApiRepository.save(address);
     }
 }

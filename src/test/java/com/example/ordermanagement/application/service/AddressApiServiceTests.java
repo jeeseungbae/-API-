@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.*;
 
 @DisplayName("AddressApiServiceTests")
 public class AddressApiServiceTests {
@@ -50,6 +51,36 @@ public class AddressApiServiceTests {
         addresses.add(address);
 
         given(addressApiRepository.findAll()).willReturn(addresses);
+    }
+
+    @Nested
+    @DisplayName("주어진 정보를 생성한다.")
+    public class createData{
+
+        @Test
+        @DisplayName("성공")
+        public void create(){
+
+            Address resource = Address.builder()
+                    .content("서울 중랑구")
+                    .distinction(1)
+                    .build();
+
+            given(addressApiRepository.save(resource))
+                    .willReturn(Address.builder()
+                            .seq(5L)
+                            .content("서울 중랑구")
+                            .distinction(1)
+                            .build());
+
+            Address address = addressApiService.create(resource);
+
+            Assertions.assertEquals(address.getSeq(),5L);
+            Assertions.assertEquals(address.getContent(),resource.getContent());
+            Assertions.assertEquals(address.getDistinction(),resource.getDistinction());
+
+            verify(addressApiRepository,times(1)).save(any());
+        }
     }
 
     @Nested

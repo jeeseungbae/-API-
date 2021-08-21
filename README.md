@@ -45,7 +45,7 @@
 
 ### 데이터 베이스 설계
 
-[데이터베이스](https://docs.google.com/spreadsheets/d/1t9n1QvaU6J57NBgoJRQk0sHx-0-bD1VrMOqUGE0-i-w/edit?usp=sharing)
+[데이터베이스](https://www.erdcloud.com/p/zMWLrNEfYetdZqaLd)
 ![데이터베이스](./image/데이터베이스설계.png)
 
 ### 연동 방식

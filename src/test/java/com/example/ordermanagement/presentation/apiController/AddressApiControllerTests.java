@@ -11,6 +11,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import org.springframework.test.web.servlet.MockMvc;
@@ -19,10 +20,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.Matchers.containsString;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @ExtendWith(SpringExtension.class)
 //ApplicationContext를 만들고 관리하는 작업을 @RunWith(SpringRunner.class)에 설정된 class로 이용하겠다는 뜻
@@ -55,7 +58,7 @@ public class AddressApiControllerTests {
 
     private void givenError(){
         given(addressApiService.findBySeq(10L))
-                .willThrow(new NoSuchDataException());
+                .willThrow(new NoSuchDataException(404L));
     }
 
     private void givenAllData(){
@@ -120,4 +123,30 @@ public class AddressApiControllerTests {
         }
     }
 
+
+    @Nested
+    @DisplayName("주어진 정보를 생성한다.")
+    public class CreateData{
+        @Test
+        @DisplayName("성공")
+        public void createData() throws Exception {
+            given(addressApiService.create(any())).will(invocation -> {
+               Address address = invocation.getArgument(0);
+               return Address.builder()
+                       .seq(5L)
+                       .content(address.getContent())
+                       .distinction(address.getDistinction())
+                       .build();
+            });
+
+            mvc.perform(post("/address")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content("{\"content\":\"경기도 수원시\",\"distinction\":1}"))
+                    .andExpect(status().isCreated())
+                    .andExpect(header().string("location","/address/5"))
+                    .andExpect(content().string("{}"));
+
+            verify(addressApiService).create(any());
+        }
+    }
 }
