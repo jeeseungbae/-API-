@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS address,oauth,user;
+DROP TABLE IF EXISTS address,oauth,customer;
 
 create table address(
     seq bigint(255) not null auto_increment primary key,
@@ -11,13 +11,13 @@ create table oauth(
     name varchar(20) not null
 );
 
-create table user(
+create table customer(
     seq bigint(255) not null auto_increment primary key,
     id varchar(30) not null,
     password varchar(30) not null,
     name varchar(30) not null,
     nickname varchar(20) not null,
-    birthday varchar(10) not null,
+    birthday date not null,
     phone_number varchar(13) not null,
     email varchar(80) not null,
     address varchar(255) not null,
