@@ -1,7 +1,7 @@
 package com.example.ordermanagement.application.service;
 
 import com.example.ordermanagement.domain.model.entity.Customer;
-import com.example.ordermanagement.domain.model.enumClass.RoleStatus;
+import com.example.ordermanagement.domain.model.enumClass.GradeStatus;
 import com.example.ordermanagement.persistance.repository.CustomerApiRepository;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -41,8 +41,8 @@ class CustomerApiServiceTests {
                 .phoneNumber("010-0110-0220")
                 .email("aws@naver.com")
                 .address("서울 마포구")
-                .role(RoleStatus.BRONZE)
-                .grade(2)
+                .grade(GradeStatus.BRONZE)
+                .role(2)
                 .registeredAt(LocalDate.of(2002,12,23))
                 .build();
     }
@@ -59,7 +59,7 @@ class CustomerApiServiceTests {
 
             Customer customer = customerApiService.findBySeq(1L);
             Assertions.assertEquals("aws1234",customer.getId());
-            Assertions.assertEquals("BRONZE",customer.getRole().toString());
+            Assertions.assertEquals("BRONZE",customer.getGrade().toString());
             Assertions.assertEquals(LocalDate.of(2002,12,23),customer.getRegisteredAt());
             verify(customerApiRepository).findBySeq(1L);
         }
@@ -88,7 +88,7 @@ class CustomerApiServiceTests {
             Customer customer = customerApiService.create(resource);
 
             Assertions.assertEquals("aws1234",customer.getId());
-            Assertions.assertEquals("BRONZE",customer.getRole().toString());
+            Assertions.assertEquals("BRONZE",customer.getGrade().toString());
             Assertions.assertEquals(LocalDate.of(2002,12,23),customer.getRegisteredAt());
 
             verify(customerApiRepository).save(any());
