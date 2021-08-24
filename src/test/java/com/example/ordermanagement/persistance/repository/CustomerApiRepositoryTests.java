@@ -19,7 +19,7 @@ class CustomerApiRepositoryTests {
 
     @Test
     @DisplayName("요청한 단일정보를 가져온다.")
-    public void findById(){
+    public void findBySeq(){
         Customer customer = customerApiRepository.findBySeq(1L).orElseThrow(NoSuchElementException::new);
 
         Assertions.assertEquals("홍길동",customer.getName());
@@ -27,6 +27,14 @@ class CustomerApiRepositoryTests {
         Assertions.assertEquals(1,customer.getRole().getId());
         Assertions.assertEquals("브론즈",customer.getRole().getTitle());
         Assertions.assertEquals("2010-02-13",customer.getBirthday().toString());
+    }
+
+    @Test
+    @DisplayName("Error 잘못된 요청시 Exception 반환")
+    public void errorFindBySeq(){
+        Assertions.assertThrows(NoSuchElementException.class,()->{
+            customerApiRepository.findBySeq(3L).orElseThrow(NoSuchElementException::new);
+        });
     }
 
     @Test
