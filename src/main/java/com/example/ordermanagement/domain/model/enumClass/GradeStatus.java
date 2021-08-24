@@ -8,7 +8,7 @@ import java.util.NoSuchElementException;
 
 @Getter
 @AllArgsConstructor
-public enum RoleStatus {
+public enum GradeStatus {
 
     NORMAL(0,"일반회원","신입 회원"),
     BRONZE(1,"브론즈","1년동안 5만원 이상 구입 회원"),
@@ -22,8 +22,8 @@ public enum RoleStatus {
     private String title;
     private String description;
 
-    public static RoleStatus getData(Integer id){
-        return Arrays.stream(RoleStatus.values())
+    public static GradeStatus getData(Integer id){
+        return Arrays.stream(GradeStatus.values())
                 .filter(v->v.getId().equals(id))
                 .findAny()
                 .orElseThrow(()->new NoSuchElementException("값이 존재하지 않습니다."));

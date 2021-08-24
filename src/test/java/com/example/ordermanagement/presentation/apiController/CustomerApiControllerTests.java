@@ -2,23 +2,15 @@ package com.example.ordermanagement.presentation.apiController;
 
 import com.example.ordermanagement.application.service.CustomerApiService;
 import com.example.ordermanagement.domain.model.entity.Customer;
-import com.example.ordermanagement.domain.model.enumClass.RoleStatus;
+import com.example.ordermanagement.domain.model.enumClass.GradeStatus;
 import org.junit.jupiter.api.*;
 
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.filter.CharacterEncodingFilter;
 
 import java.time.LocalDate;
 
@@ -57,8 +49,8 @@ class CustomerApiControllerTests {
                 .phoneNumber("010-0110-0220")
                 .email("aws@naver.com")
                 .address("서울 마포구")
-                .role(RoleStatus.BRONZE)
-                .grade(2)
+                .grade(GradeStatus.BRONZE)
+                .role(2)
                 .registeredAt(LocalDate.of(2002,12,23))
                 .build();
 
@@ -78,7 +70,7 @@ class CustomerApiControllerTests {
                     .andExpect(content().string(
                             containsString("\"name\":\"aws동\"")))
                     .andExpect(content().string(
-                            containsString("\"role\":\"BRONZE\"")))
+                            containsString("\"grade\":\"BRONZE\"")))
                     .andExpect(content().string(
                             containsString("\"address\":\"서울 마포구\"")));
 
@@ -88,7 +80,7 @@ class CustomerApiControllerTests {
 
     @Nested
     @DisplayName("user 정보를 저장한다.")
-    public class save{
+    public class save {
 
         @Test
         @DisplayName("성공 : 단일 정보 저장")
@@ -99,17 +91,177 @@ class CustomerApiControllerTests {
                                     "\"name\":\"aws동\",\"nickname\":\"aws동이\"," +
                                     "\"birthday\":\"2012-05-23\",\"phoneNumber\":\"010-0110-0220\"," +
                                     "\"email\":\"aws@naver.com\",\"address\":\"서울 마포구\"," +
-                                    "\"role\":\"BRONZE\",\"grade\":2,\"registeredAt\":\"2002-12-23\"}"))
+                                    "\"grade\":\"BRONZE\",\"role\":2}"))
                     .andExpect(status().is2xxSuccessful())
                     .andExpect(content().string(
                             containsString("\"name\":\"aws동\"")))
                     .andExpect(content().string(
-                            containsString("\"role\":\"BRONZE\"")))
+                            containsString("\"grade\":\"BRONZE\"")))
                     .andExpect(content().string(
-                            containsString("\"address\":\"서울 마포구\"")));
+                            containsString("\"address\":\"서울 마포구\"")))
+                    .andExpect(content().string(
+                            containsString("\"role\":2")));
 
             verify(customerApiService).create(any());
         }
+
+        @Nested
+        @DisplayName("error : 정보 입력 x")
+        public class ErrorInput {
+            @Test
+            @DisplayName("error : 아이디")
+            public void ErrorId() throws Exception {
+                mockMvc.perform(post("/customer")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content("{\"id\":\"\",\"password\":\"aws1234\"," +
+                                        "\"name\":\"\",\"nickname\":\"aws동이\"," +
+                                        "\"birthday\":\"2012-05-23\",\"phoneNumber\":\"010-0110-0220\"," +
+                                        "\"email\":\"aws@naver.com\",\"address\":\"서울 마포구\"," +
+                                        "\"grade\":\"BRONZE\",\"role\":2,\"registeredAt\":\"2002-12-23\"}"))
+                        .andExpect(status().is4xxClientError());
+            }
+
+            @Test
+            @DisplayName("error : 비밀번호")
+            public void errorPassword() throws Exception {
+                mockMvc.perform(post("/customer")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content("{\"id\":\"aws1234\",\"password\":\"\"," +
+                                        "\"name\":\"aws동\",\"nickname\":\"aws동이\"," +
+                                        "\"birthday\":\"2012-05-23\",\"phoneNumber\":\"010-0110-0220\"," +
+                                        "\"email\":\"aws@naver.com\",\"address\":\"서울 마포구\"," +
+                                        "\"grade\":\"BRONZE\",\"role\":2}"))
+                        .andExpect(status().is4xxClientError());
+            }
+            @Test
+            @DisplayName("error : 이름")
+            public void ErrorName() throws Exception {
+                mockMvc.perform(post("/customer")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content("{\"id\":\"aws1234\",\"password\":\"aws1234\"," +
+                                        "\"name\":\"\",\"nickname\":\"aws동이\"," +
+                                        "\"birthday\":\"2012-05-23\",\"phoneNumber\":\"010-0110-0220\"," +
+                                        "\"email\":\"aws@naver.com\",\"address\":\"서울 마포구\"," +
+                                        "\"grade\":\"BRONZE\",\"role\":2,\"registeredAt\":\"2002-12-23\"}"))
+                        .andExpect(status().is4xxClientError());
+            }
+
+            @Test
+            @DisplayName("error : 닉네임")
+            public void errorNickname() throws Exception {
+                mockMvc.perform(post("/customer")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content("{\"id\":\"aws1234\",\"password\":\"aws1234\"," +
+                                        "\"name\":\"\",\"nickname\":\"aws동이\"," +
+                                        "\"birthday\":\"2012-05-23\",\"phoneNumber\":\"010-0110-0220\"," +
+                                        "\"email\":\"aws@naver.com\",\"address\":\"서울 마포구\"," +
+                                        "\"grade\":\"BRONZE\",\"role\":2}"))
+                        .andExpect(status().is4xxClientError());
+            }
+            @Test
+            @DisplayName("error : 생일")
+            public void errorBirthday() throws Exception {
+                mockMvc.perform(post("/customer")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content("{\"id\":\"aws1234\",\"password\":\"aws1234\"," +
+                                        "\"name\":\"aws동\",\"nickname\":\"aws동이\"," +
+                                        "\"birthday\":\"\",\"phoneNumber\":\"010-0110-0220\"," +
+                                        "\"email\":\"aws@naver.com\",\"address\":\"서울 마포구\"," +
+                                        "\"grade\":\"BRONZE\",\"role\":2}"))
+                        .andExpect(status().is4xxClientError());
+            }
+            @Test
+            @DisplayName("error : 전화번호")
+            public void errorPhoneNumber() throws Exception {
+                mockMvc.perform(post("/customer")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content("{\"id\":\"aws1234\",\"password\":\"aws1234\"," +
+                                        "\"name\":\"aws동\",\"nickname\":\"aws동이\"," +
+                                        "\"birthday\":\"2012-05-23\",\"phoneNumber\":\"\"," +
+                                        "\"email\":\"aws@naver.com\",\"address\":\"서울 마포구\"," +
+                                        "\"grade\":\"BRONZE\",\"role\":2}"))
+                        .andExpect(status().is4xxClientError());
+            }
+            @Test
+            @DisplayName("error : 이메일")
+            public void errorEmail() throws Exception {
+                mockMvc.perform(post("/customer")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content("{\"id\":\"aws1234\",\"password\":\"aws1234\"," +
+                                        "\"name\":\"aws동\",\"nickname\":\"aws동이\"," +
+                                        "\"birthday\":\"2012-05-23\",\"phoneNumber\":\"010-0110-0220\"," +
+                                        "\"email\":\"\",\"address\":\"서울 마포구\"," +
+                                        "\"grade\":\"BRONZE\",\"role\":2}"))
+                        .andExpect(status().is4xxClientError());
+            }
+            @Test
+            @DisplayName("error : 주소")
+            public void errorAddress() throws Exception {
+                mockMvc.perform(post("/customer")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content("{\"id\":\"aws1234\",\"password\":\"aws1234\"," +
+                                        "\"name\":\"aws동\",\"nickname\":\"aws동이\"," +
+                                        "\"birthday\":\"2012-05-23\",\"phoneNumber\":\"010-0110-0220\"," +
+                                        "\"email\":\"aws@naver.com\",\"address\":\"\"," +
+                                        "\"grade\":\"BRONZE\",\"role\":2}"))
+                        .andExpect(status().is4xxClientError());
+            }
+            @Test
+            @DisplayName("error : 등급")
+            public void errorRole() throws Exception {
+                mockMvc.perform(post("/customer")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content("{\"id\":\"aws1234\",\"password\":\"aws1234\"," +
+                                        "\"name\":\"aws동\",\"nickname\":\"aws동이\"," +
+                                        "\"birthday\":\"2012-05-23\",\"phoneNumber\":\"010-0110-0220\"," +
+                                        "\"email\":\"aws@naver.com\",\"address\":\"서울 마포구\"," +
+                                        "\"grade\":\"BRONZE\",\"role\":}"))
+                        .andExpect(status().is4xxClientError());
+            }
+            @Test
+            @DisplayName("error : grade")
+            public void errorGrade() throws Exception {
+                mockMvc.perform(post("/customer")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content("{\"id\":\"aws1234\",\"password\":\"aws1234\"," +
+                                        "\"name\":\"aws동\",\"nickname\":\"aws동이\"," +
+                                        "\"birthday\":\"2012-05-23\",\"phoneNumber\":\"010-0110-0220\"," +
+                                        "\"email\":\"aws@naver.com\",\"address\":\"서울 마포구\"," +
+                                        "\"grade\":\"\",\"role\":2}"))
+                        .andExpect(status().is4xxClientError());
+            }
+        }
+
+        @Nested
+        @DisplayName("error : 길이 제한이상 입력")
+        public class ErrorSize{
+            @Test
+            @DisplayName("error : 아이디 30자 초과 입력")
+            public void limitSizeId() throws Exception {
+                mockMvc.perform(post("/customer")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content("{\"id\":\"0123456789012345678901234567890\",\"password\":\"aws1234\"," +
+                                        "\"name\":\"aws동\",\"nickname\":\"aws동이\"," +
+                                        "\"birthday\":\"2012-05-23\",\"phoneNumber\":\"010-0110-0220\"," +
+                                        "\"email\":\"aws@naver.com\",\"address\":\"서울 마포구\"," +
+                                        "\"grade\":\"BRONZE\",\"role\":2}"))
+                        .andExpect(status().is4xxClientError());
+            }
+            @Test
+            @DisplayName("error : 이름 100자 이상 입력")
+            public void limitSizeName() throws Exception {
+                mockMvc.perform(post("/customer")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"id\":\"aws1234\",\"password\":\"aws1234\"," +
+                                "\"name\":\"0123456789012345678901234567890012345678901234567890123456789001234567890123456789012345678900123456789012345678901234567890\"," +
+                                "\"nickname\":\"aws동이\"," +
+                                "\"birthday\":\"2012-05-23\",\"phoneNumber\":\"010-0110-0220\"," +
+                                "\"email\":\"aws@naver.com\",\"address\":\"서울 마포구\"," +
+                                "\"grade\":\"BRONZE\",\"role\":2}"))
+                        .andExpect(status().is4xxClientError());
+            }
+        }
+
     }
 }
 

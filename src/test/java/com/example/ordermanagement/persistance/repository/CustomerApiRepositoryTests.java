@@ -1,7 +1,8 @@
 package com.example.ordermanagement.persistance.repository;
 
 import com.example.ordermanagement.domain.model.entity.Customer;
-import com.example.ordermanagement.domain.model.enumClass.RoleStatus;
+import com.example.ordermanagement.domain.model.enumClass.GradeStatus;
+import com.example.ordermanagement.exception.NoSuchDataException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,21 +21,13 @@ class CustomerApiRepositoryTests {
     @Test
     @DisplayName("요청한 단일정보를 가져온다.")
     public void findBySeq(){
-        Customer customer = customerApiRepository.findBySeq(1L).orElseThrow(NoSuchElementException::new);
+        Customer customer = customerApiRepository.findBySeq(1L).orElseThrow(()-> new NoSuchDataException(1L));
 
         Assertions.assertEquals("홍길동",customer.getName());
-        Assertions.assertEquals("BRONZE",customer.getRole().toString());
-        Assertions.assertEquals(1,customer.getRole().getId());
-        Assertions.assertEquals("브론즈",customer.getRole().getTitle());
+        Assertions.assertEquals("BRONZE",customer.getGrade().toString());
+        Assertions.assertEquals(1,customer.getGrade().getId());
+        Assertions.assertEquals("브론즈",customer.getGrade().getTitle());
         Assertions.assertEquals("2010-02-13",customer.getBirthday().toString());
-    }
-
-    @Test
-    @DisplayName("Error 잘못된 요청시 Exception 반환")
-    public void errorFindBySeq(){
-        Assertions.assertThrows(NoSuchElementException.class,()->{
-            customerApiRepository.findBySeq(3L).orElseThrow(NoSuchElementException::new);
-        });
     }
 
     @Test
@@ -49,13 +42,12 @@ class CustomerApiRepositoryTests {
                 .phoneNumber("010-0110-0220")
                 .email("aws@naver.com")
                 .address("서울 마포구")
-                .role(RoleStatus.BRONZE)
-                .grade(2)
-                .registeredAt(LocalDate.of(2002,12,23))
+                .grade(GradeStatus.BRONZE)
+                .role(2)
                 .build();
 
         Customer customer = customerApiRepository.save(resource);
-        Customer findCustomer = customerApiRepository.findBySeq(3L).orElseThrow(RuntimeException::new);
+        Customer findCustomer = customerApiRepository.findBySeq(3L).orElseThrow(()->new NoSuchDataException(3L));
 
         Assertions.assertEquals(customer,findCustomer);
     }
