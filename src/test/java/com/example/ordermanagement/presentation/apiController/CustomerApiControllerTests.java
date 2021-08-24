@@ -3,19 +3,22 @@ package com.example.ordermanagement.presentation.apiController;
 import com.example.ordermanagement.application.service.CustomerApiService;
 import com.example.ordermanagement.domain.model.entity.Customer;
 import com.example.ordermanagement.domain.model.enumClass.RoleStatus;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.*;
 
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.filter.CharacterEncodingFilter;
 
 import java.time.LocalDate;
 
@@ -29,7 +32,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(CustomerApiController.class)
-@ExtendWith(SpringExtension.class)
 class CustomerApiControllerTests {
 
     @Autowired
@@ -67,6 +69,7 @@ class CustomerApiControllerTests {
     @Nested
     @DisplayName("user 정보를 조회한다.")
     public class Find{
+
         @Test
         @DisplayName("성공 : 단일 정보 조회")
         public void findBySeq() throws Exception {
@@ -86,6 +89,7 @@ class CustomerApiControllerTests {
     @Nested
     @DisplayName("user 정보를 저장한다.")
     public class save{
+
         @Test
         @DisplayName("성공 : 단일 정보 저장")
         public void createData() throws Exception {
