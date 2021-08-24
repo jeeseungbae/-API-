@@ -1,10 +1,10 @@
 package com.example.ordermanagement.application.service;
 
 import com.example.ordermanagement.domain.model.entity.Customer;
+import com.example.ordermanagement.exception.NoSuchDataException;
 import com.example.ordermanagement.persistance.repository.CustomerApiRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.NoSuchElementException;
 
 @Service
 public class CustomerApiService {
@@ -17,7 +17,7 @@ public class CustomerApiService {
 
     public Customer findBySeq(Long seq){
         return customerApiRepository.findBySeq(seq)
-                .orElseThrow(()->new NoSuchElementException("데이터가 존재하지 않습니다."));
+                .orElseThrow(()->new NoSuchDataException(seq));
     }
 
     public Customer create(Customer customer){
