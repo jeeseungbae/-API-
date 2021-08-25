@@ -35,7 +35,7 @@ class CustomerApiRepositoryTests {
     public void create(){
         Customer resource = Customer.builder()
                 .id("aws1234")
-                .password("aws1234")
+                .password("aws123456")
                 .name("aws동")
                 .nickname("aws동이")
                 .birthday(LocalDate.of(2012,05,23))
