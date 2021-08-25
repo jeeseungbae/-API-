@@ -28,11 +28,11 @@ public class Customer {
     private Long seq;
 
     @NotBlank(message = "아이디를 입력해주세요")
-    @Size(min = 1,max = 30)
+    @Size(min = 5,max = 50,message = "아이디는 5자 이상 입력 해주세요")
     private String id;
 
     @NotBlank(message = "비밀번호를 입력해주세요")
-    @Size(min = 1,max = 30)
+    @Size(min = 8,max = 50,message = "비밀번호는 8자 이상 입력 해주세요")
     private String password;
 
     @NotBlank(message = "이름을 입력해주세요")

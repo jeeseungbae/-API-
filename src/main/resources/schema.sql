@@ -19,7 +19,7 @@ create table customer(
     nickname varchar(20) not null,
     birthday date not null,
     phone_number varchar(13) not null,
-    email varchar(80) not null,
+    email varchar(255) not null,
     address varchar(255) not null,
     role int(1) not null,
     grade int(1) not null,
