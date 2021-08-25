@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.time.LocalDate;
-import java.util.NoSuchElementException;
 
 @DataJpaTest
 class CustomerApiRepositoryTests {
@@ -25,7 +24,7 @@ class CustomerApiRepositoryTests {
 
         Assertions.assertEquals("홍길동",customer.getName());
         Assertions.assertEquals("BRONZE",customer.getGrade().toString());
-        Assertions.assertEquals(1,customer.getGrade().getId());
+        Assertions.assertEquals(1,customer.getGrade().getGradeId());
         Assertions.assertEquals("브론즈",customer.getGrade().getTitle());
         Assertions.assertEquals("2010-02-13",customer.getBirthday().toString());
     }
@@ -34,7 +33,7 @@ class CustomerApiRepositoryTests {
     @DisplayName("요청한 단일정보를 저장한다.")
     public void create(){
         Customer resource = Customer.builder()
-                .id("aws1234")
+                .userId("aws1234")
                 .password("aws123456")
                 .name("aws동")
                 .nickname("aws동이")
@@ -51,4 +50,5 @@ class CustomerApiRepositoryTests {
 
         Assertions.assertEquals(customer,findCustomer);
     }
+
 }

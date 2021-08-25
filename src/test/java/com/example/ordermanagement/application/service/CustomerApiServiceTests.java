@@ -8,6 +8,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.dao.DuplicateKeyException;
 
 import java.time.LocalDate;
 import java.util.NoSuchElementException;
@@ -33,7 +34,7 @@ class CustomerApiServiceTests {
     static void createCustomer(){
         resource = Customer.builder()
                 .seq(1L)
-                .id("aws1234")
+                .userId("aws1234")
                 .password("aws1234")
                 .name("aws동")
                 .nickname("aws동이")
@@ -58,7 +59,7 @@ class CustomerApiServiceTests {
             given(customerApiRepository.findBySeq(1L)).willReturn(java.util.Optional.ofNullable(resource));
 
             Customer customer = customerApiService.findBySeq(1L);
-            Assertions.assertEquals("aws1234",customer.getId());
+            Assertions.assertEquals("aws1234",customer.getUserId());
             Assertions.assertEquals("BRONZE",customer.getGrade().toString());
             Assertions.assertEquals(LocalDate.of(2002,12,23),customer.getRegisteredAt());
             verify(customerApiRepository).findBySeq(1L);
@@ -87,12 +88,51 @@ class CustomerApiServiceTests {
 
             Customer customer = customerApiService.create(resource);
 
-            Assertions.assertEquals("aws1234",customer.getId());
+            Assertions.assertEquals("aws1234",customer.getUserId());
             Assertions.assertEquals("BRONZE",customer.getGrade().toString());
             Assertions.assertEquals(LocalDate.of(2002,12,23),customer.getRegisteredAt());
 
             verify(customerApiRepository).save(any());
         }
-    }
 
+        @Nested
+        @DisplayName("Error : 중복으로 인한 에러 반환")
+        public class errorDuplicate {
+
+            @Test
+            @DisplayName("error : 아이디 중복")
+            public void errorDuplicateUserId () {
+                given(customerApiRepository.findByUserId(resource.getUserId())).willThrow(new DuplicateKeyException(""));
+
+                Assertions.assertThrows(DuplicateKeyException.class,
+                        () -> customerApiService.create(resource));
+            }
+
+            @Test
+            @DisplayName("error : 닉네임 중복")
+            public void errorDuplicateNickname () {
+                given(customerApiRepository.findByNickname(resource.getNickname())).willThrow(new DuplicateKeyException(""));
+
+                Assertions.assertThrows(DuplicateKeyException.class,
+                        () -> customerApiService.create(resource));
+            }
+            @Test
+            @DisplayName("error : 전화번호 중복")
+            public void errorDuplicatePhoneNumber () {
+                given(customerApiRepository.findByPhoneNumber(resource.getPhoneNumber())).willThrow(new DuplicateKeyException(""));
+
+                Assertions.assertThrows(DuplicateKeyException.class,
+                        () -> customerApiService.create(resource));
+            }
+
+            @Test
+            @DisplayName("error : 이메일 중복")
+            public void errorDuplicateEmail() {
+                given(customerApiRepository.findByEmail(resource.getEmail())).willThrow(new DuplicateKeyException(""));
+
+                Assertions.assertThrows(DuplicateKeyException.class,
+                        () -> customerApiService.create(resource));
+            }
+        }
+    }
 }

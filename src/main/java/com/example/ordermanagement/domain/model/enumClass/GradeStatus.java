@@ -18,13 +18,13 @@ public enum GradeStatus {
     DIAMOND(5,"다이아몬드","1년동안 1000만원 이상 구입 회원"),
     GRANDMASTER(6,"그랜드마스터","1년동안 2000만원 이상 구입 회원");
 
-    private Integer Id;
+    private Integer gradeId;
     private String title;
     private String description;
 
     public static GradeStatus getData(Integer id){
         return Arrays.stream(GradeStatus.values())
-                .filter(v->v.getId().equals(id))
+                .filter(v->v.getGradeId().equals(id))
                 .findAny()
                 .orElseThrow(()->new NoSuchElementException("값이 존재하지 않습니다."));
     }
