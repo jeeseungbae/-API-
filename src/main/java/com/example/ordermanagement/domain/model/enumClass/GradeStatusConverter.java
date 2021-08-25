@@ -7,7 +7,7 @@ import javax.persistence.Converter;
 public class GradeStatusConverter implements AttributeConverter<GradeStatus, Integer> {
     @Override
     public Integer convertToDatabaseColumn(GradeStatus attribute) {
-        return attribute.getId();
+        return attribute.getGradeId();
     }
 
     @Override

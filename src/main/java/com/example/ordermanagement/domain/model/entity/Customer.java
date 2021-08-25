@@ -28,19 +28,19 @@ public class Customer {
     private Long seq;
 
     @NotBlank(message = "아이디를 입력해주세요")
-    @Size(min = 1,max = 30)
-    private String id;
+    @Size(min = 5,max = 50,message = "아이디는 5자 이상 50자 이하 입력 해주세요")
+    private String userId;
 
     @NotBlank(message = "비밀번호를 입력해주세요")
-    @Size(min = 1,max = 30)
+    @Size(min = 8,max = 50,message = "비밀번호는 8자 이상 50자 이하 입력 해주세요")
     private String password;
 
     @NotBlank(message = "이름을 입력해주세요")
-    @Size(min = 1,max = 100)
+    @Size(min = 1,max = 100, message = "이름은 1~100자 사이에 입력해주세요")
     private String name;
 
     @NotBlank(message = "닉네임을 입력해주세요")
-    @Size(min = 1,max = 20)
+    @Size(min = 1,max = 20, message = "닉네임은 1~20자 사이에 입력해주세요")
     private String nickname;
 
     @NotNull(message = "생년월일을 입력해주세요")
@@ -64,7 +64,8 @@ public class Customer {
     private GradeStatus grade;
 
     @NotNull
-    @Digits(integer = 5,fraction = 0,message = "Server Error - 잘못된 유저정보가 들어왔습니다.")
+    @Max(value = 5,message = "Server Error - 잘못된 유저정보가 들어왔습니다.")
+    @Min(value = 1,message = "Server Error - 잘못된 유저정보가 들어왔습니다.")
     private Integer role;
 
     @CreationTimestamp

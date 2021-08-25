@@ -13,13 +13,13 @@ create table oauth(
 
 create table customer(
     seq bigint(255) not null auto_increment primary key,
-    id varchar(30) not null,
+    user_id varchar(30) not null,
     password varchar(30) not null,
     name varchar(30) not null,
     nickname varchar(20) not null,
     birthday date not null,
     phone_number varchar(13) not null,
-    email varchar(80) not null,
+    email varchar(255) not null,
     address varchar(255) not null,
     role int(1) not null,
     grade int(1) not null,
