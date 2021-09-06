@@ -1,4 +1,4 @@
-package com.example.ordermanagement.presentation.exceptionController;
+package com.example.ordermanagement.presentation.optionAdvice;
 
 import com.example.ordermanagement.exception.NoSuchDataException;
 import org.springframework.http.HttpStatus;
