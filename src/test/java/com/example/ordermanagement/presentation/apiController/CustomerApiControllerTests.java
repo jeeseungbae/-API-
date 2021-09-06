@@ -13,6 +13,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
@@ -20,8 +22,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(CustomerApiController.class)
 class CustomerApiControllerTests {
@@ -53,9 +54,12 @@ class CustomerApiControllerTests {
                 .role(2)
                 .registeredAt(LocalDate.of(2002,12,23))
                 .build();
+        List<Customer> customers = new ArrayList<>();
+        customers.add(customer);
 
         given(customerApiService.create(any())).willReturn(customer);
         given(customerApiService.findBySeq(1L)).willReturn(customer);
+        given(customerApiService.findAll()).willReturn(customers);
     }
 
     @Nested
@@ -75,6 +79,16 @@ class CustomerApiControllerTests {
                             containsString("\"address\":\"서울 마포구\"")));
 
             verify(customerApiService).findBySeq(any());
+        }
+        @Test
+        @DisplayName("성공 : 모든 정보 조회")
+        public void findAll() throws Exception {
+            mockMvc.perform(get("/customer/all"))
+                    .andExpect(status().is2xxSuccessful())
+                    .andExpect(header().string("Content-Type",MediaType.APPLICATION_JSON_UTF8_VALUE))
+                    .andExpect(header().exists("TimeStamp"))
+                    .andExpect(content().string(
+                            containsString("\"seq\":1")));
         }
     }
 
@@ -491,6 +505,8 @@ class CustomerApiControllerTests {
             }
         }
     }
+
+
 }
 
 //{

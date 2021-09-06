@@ -6,6 +6,8 @@ import com.example.ordermanagement.persistance.repository.CustomerApiRepository;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 @Service
 public class CustomerApiService {
@@ -19,6 +21,10 @@ public class CustomerApiService {
     public Customer findBySeq(Long seq){
         return customerApiRepository.findBySeq(seq)
                 .orElseThrow(()->new NoSuchDataException(seq));
+    }
+
+    public List<Customer> findAll(){
+        return customerApiRepository.findAll();
     }
 
     public Customer create(Customer customer){

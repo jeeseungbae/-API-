@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @DataJpaTest
 class CustomerApiRepositoryTests {
@@ -27,6 +28,17 @@ class CustomerApiRepositoryTests {
         Assertions.assertEquals(1,customer.getGrade().getGradeId());
         Assertions.assertEquals("브론즈",customer.getGrade().getTitle());
         Assertions.assertEquals("2010-02-13",customer.getBirthday().toString());
+    }
+
+    @Test
+    @DisplayName("요청한 모든 정보를 가져온다.")
+    public void findAll(){
+        List<Customer> customers = customerApiRepository.findAll();
+
+        Assertions.assertEquals(1,customers.get(0).getSeq());
+        Assertions.assertEquals("홍길동",customers.get(0).getName());
+        Assertions.assertEquals(2,customers.get(1).getSeq());
+        Assertions.assertEquals("둘리",customers.get(1).getName());
     }
 
     @Test

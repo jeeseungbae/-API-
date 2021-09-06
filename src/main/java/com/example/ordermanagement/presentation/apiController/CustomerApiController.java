@@ -2,27 +2,60 @@ package com.example.ordermanagement.presentation.apiController;
 
 import com.example.ordermanagement.application.service.CustomerApiService;
 import com.example.ordermanagement.domain.model.entity.Customer;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
+import javax.annotation.PostConstruct;
+import java.time.LocalDateTime;
+import java.util.List;
+
+@RestController()
 @RequestMapping("/customer")
 public class CustomerApiController {
 
     private final CustomerApiService customerApiService;
+    private HttpHeaders headers;
 
     public CustomerApiController(CustomerApiService customerApiService) {
         this.customerApiService = customerApiService;
     }
 
+    @PostConstruct
+    public void setUp(){
+        headers = new HttpHeaders();
+        headers.add("Content-Type", MediaType.APPLICATION_JSON.toString());
+        headers.add("TimeStamp",LocalDateTime.now().toString());
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<Customer>> findAll(){
+        List<Customer> customers = customerApiService.findAll();
+        return ResponseEntity.ok()
+                .headers(makeHeader())
+                .body(customers);
+    }
+
     @GetMapping("/{seq}")
-    public Customer findBySeq(@PathVariable Long seq){
-        return customerApiService.findBySeq(seq);
+    public ResponseEntity<Customer> findBySeq(@PathVariable Long seq){
+        Customer customer = customerApiService.findBySeq(seq);
+        return ResponseEntity.ok()
+                .headers(makeHeader())
+                .body(customer);
     }
 
     @PostMapping("")
-    public Customer create(@Validated @RequestBody Customer customer){
-        return customerApiService.create(customer);
+    public ResponseEntity<Customer> create(@Validated @RequestBody Customer resource){
+        Customer customer = customerApiService.create(resource);
+        return ResponseEntity.ok()
+                .headers(makeHeader())
+                .body(customer);
     }
 
+    private HttpHeaders makeHeader(){
+        headers.set("TimeStamp",LocalDateTime.now().toString());
+        return headers;
+    }
 }
