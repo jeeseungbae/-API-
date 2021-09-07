@@ -1,6 +1,7 @@
 package com.example.ordermanagement.persistance.repository;
 
 import com.example.ordermanagement.domain.model.entity.Customer;
+import com.example.ordermanagement.domain.model.entity.CustomerDto;
 import com.example.ordermanagement.domain.model.enumClass.GradeStatus;
 import com.example.ordermanagement.exception.NoSuchDataException;
 import org.junit.jupiter.api.Assertions;
@@ -63,4 +64,37 @@ class CustomerApiRepositoryTests {
         Assertions.assertEquals(customer,findCustomer);
     }
 
+    @Test
+    @DisplayName("요청한 정보를 수정한다.")
+    public void modifySuccess(){
+        Customer resource = customerApiRepository.findBySeq(1L).orElseThrow(()-> new NoSuchDataException(1L));
+        Customer createCustomer = Customer.builder()
+                .seq(resource.getSeq())
+                .userId(resource.getUserId())
+                .password(resource.getPassword())
+                .name("ssdfdsf")
+                .nickname("wegwegwerg")
+                .birthday(LocalDate.of(2014,12,23))
+                .phoneNumber("010-2849-0000")
+                .email("sfewsf@sjdkflsejf.com")
+                .address("sfejsklejfklsefa")
+                .registeredAt(resource.getRegisteredAt())
+                .role(resource.getRole())
+                .grade(resource.getGrade())
+                .build();
+
+        Assertions.assertNotEquals(createCustomer.getName(),resource.getName());
+        Assertions.assertNotEquals(createCustomer.getNickname(),resource.getNickname());
+        Assertions.assertNotEquals(createCustomer.getEmail(),resource.getEmail());
+        Assertions.assertNotEquals(createCustomer.getAddress(),resource.getAddress());
+        Assertions.assertNotEquals(createCustomer.getPhoneNumber(),resource.getPhoneNumber());
+
+        Customer customerStore = customerApiRepository.save(createCustomer);
+
+        Assertions.assertEquals(createCustomer.getName(),customerStore.getName());
+        Assertions.assertEquals(createCustomer.getNickname(),customerStore.getNickname());
+        Assertions.assertEquals(createCustomer.getEmail(),customerStore.getEmail());
+        Assertions.assertEquals(createCustomer.getAddress(),customerStore.getAddress());
+        Assertions.assertEquals(createCustomer.getPhoneNumber(),customerStore.getPhoneNumber());
+    }
 }

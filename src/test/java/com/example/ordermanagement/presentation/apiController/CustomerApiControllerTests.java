@@ -3,25 +3,29 @@ package com.example.ordermanagement.presentation.apiController;
 import com.example.ordermanagement.application.service.CustomerApiService;
 import com.example.ordermanagement.domain.model.entity.Customer;
 import com.example.ordermanagement.domain.model.enumClass.GradeStatus;
+import com.example.ordermanagement.presentation.optionAdvice.ErrorHandler;
 import org.junit.jupiter.api.*;
 
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import javax.validation.ConstraintViolationException;
+import javax.xml.bind.ValidationException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(CustomerApiController.class)
@@ -507,6 +511,41 @@ class CustomerApiControllerTests {
     }
 
 
+    @Nested
+    @DisplayName("user 정보를 수정한다.")
+    public class modify {
+        @Test
+        @DisplayName("성공 : 단일정보 수정")
+        public void modifyData() throws Exception {
+            Customer customer = Customer.builder()
+                    .seq(1L)
+                    .userId("aws1234")
+                    .password("aws1234")
+                    .name("aws동sss")
+                    .nickname("aws동이")
+                    .birthday(LocalDate.of(2012, 05, 23))
+                    .phoneNumber("010-0110-0220")
+                    .email("aws@naver.com")
+                    .address("서울 마포구")
+                    .grade(GradeStatus.BRONZE)
+                    .role(2)
+                    .registeredAt(LocalDate.of(2002, 12, 23))
+                    .build();
+            given(customerApiService.modify(any())).willReturn(customer);
+
+            mockMvc.perform(patch("/customer")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content("{\"seq\":1," +
+                                    "\"userId\":\"aws1234\",\"password\":\"aws123456\"," +
+                                    "\"name\":\"aws동sss\",\"nickname\":\"aws동이\"," +
+                                    "\"birthday\":\"2012-05-23\",\"phoneNumber\":\"010-0110-0220\"," +
+                                    "\"email\":\"aws@naver.com\",\"address\":\"서울 마포구\"," +
+                                    "\"grade\":\"BRONZE\",\"role\":2}"))
+                    .andExpect(status().is2xxSuccessful())
+                    .andExpect(content().string(
+                            containsString("\"name\":\"aws동sss\"")));
+        }
+    }
 }
 
 //{

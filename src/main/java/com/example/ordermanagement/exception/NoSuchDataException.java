@@ -7,6 +7,6 @@ import java.util.NoSuchElementException;
 public class NoSuchDataException extends NoSuchElementException {
 
     public NoSuchDataException(long id){
-        super("Could not find Data" + id);
+        super("Could not find Data : " + id);
     }
 }
