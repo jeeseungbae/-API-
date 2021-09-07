@@ -2,10 +2,8 @@ package com.example.ordermanagement.domain.model.entity;
 
 import com.example.ordermanagement.domain.model.enumClass.GradeStatus;
 import com.example.ordermanagement.domain.model.enumClass.GradeStatusConverter;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.Accessors;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -19,6 +17,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Accessors(chain = true)
 @EntityListeners(AuditingEntityListener.class)
 public class Customer {
 

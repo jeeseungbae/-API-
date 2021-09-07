@@ -6,7 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 import java.util.Optional;
 
-
 public interface CustomerApiRepository extends JpaRepository<Customer,Long> {
 
     Customer save(Customer customer);
@@ -22,4 +21,5 @@ public interface CustomerApiRepository extends JpaRepository<Customer,Long> {
     Optional<Customer> findByPhoneNumber(String phoneNumber);
 
     List<Customer> findAll();
+
 }

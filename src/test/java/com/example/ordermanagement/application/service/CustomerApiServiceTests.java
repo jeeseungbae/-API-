@@ -1,6 +1,7 @@
 package com.example.ordermanagement.application.service;
 
 import com.example.ordermanagement.domain.model.entity.Customer;
+import com.example.ordermanagement.domain.model.entity.CustomerDto;
 import com.example.ordermanagement.domain.model.enumClass.GradeStatus;
 import com.example.ordermanagement.persistance.repository.CustomerApiRepository;
 import org.junit.jupiter.api.*;
@@ -10,6 +11,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.dao.DuplicateKeyException;
 
+import javax.validation.ConstraintViolationException;
 import java.time.LocalDate;
 import java.util.NoSuchElementException;
 import java.util.concurrent.TimeUnit;
@@ -133,6 +135,61 @@ class CustomerApiServiceTests {
                 Assertions.assertThrows(DuplicateKeyException.class,
                         () -> customerApiService.create(resource));
             }
+        }
+    }
+
+    @Nested
+    @DisplayName("정보를 수정한다.")
+    public class Modify{
+
+        @Test
+        @DisplayName("성공 : 단일 정보를 수정")
+        public void modifySuccess(){
+            given(customerApiRepository.findBySeq(1L)).willReturn(java.util.Optional.ofNullable(resource));
+
+            CustomerDto customerDto = CustomerDto.builder()
+                    .seq(1L)
+                    .name("swer123")
+                    .nickname("afewh24")
+                    .birthday(LocalDate.of(2000,12,23))
+                    .email("sdgaweigj@naver.com")
+                    .address("sdjflkewf")
+                    .phoneNumber("010-0232-2324")
+                    .build();
+
+            Customer customer = resource;
+
+            given(customerApiRepository.save(resource)).willReturn(customer);
+            customerApiService.modify(customerDto);
+
+            Assertions.assertEquals(customer.getName(),customerDto.getName());
+            Assertions.assertEquals(customer.getNickname(),customerDto.getNickname());
+            Assertions.assertEquals(customer.getEmail(),customerDto.getEmail());
+            Assertions.assertEquals(customer.getAddress(),customerDto.getAddress());
+            Assertions.assertEquals(customer.getPhoneNumber(),customerDto.getPhoneNumber());
+
+            verify(customerApiRepository).save(any());
+        }
+
+        @Test
+        @DisplayName("성공 : 정보 없이 변경 가능")
+        public void failModifyInput(){
+            given(customerApiRepository.findBySeq(1L)).willReturn(java.util.Optional.ofNullable(resource));
+
+            CustomerDto customerDto = CustomerDto.builder()
+                    .seq(1L)
+                    .name("")
+                    .nickname("")
+                    .birthday(LocalDate.of(2000,12,23))
+                    .email("")
+                    .address("")
+                    .phoneNumber("010-0232-2324")
+                    .build();
+
+            given(customerApiRepository.save(any())).willReturn(resource);
+            customerApiService.modify(customerDto);
+
+            verify(customerApiRepository).save(any());
         }
     }
 }

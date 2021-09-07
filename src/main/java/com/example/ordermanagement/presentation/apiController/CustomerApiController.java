@@ -2,6 +2,7 @@ package com.example.ordermanagement.presentation.apiController;
 
 import com.example.ordermanagement.application.service.CustomerApiService;
 import com.example.ordermanagement.domain.model.entity.Customer;
+import com.example.ordermanagement.domain.model.entity.CustomerDto;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -49,6 +50,14 @@ public class CustomerApiController {
     @PostMapping("")
     public ResponseEntity<Customer> create(@Validated @RequestBody Customer resource){
         Customer customer = customerApiService.create(resource);
+        return ResponseEntity.ok()
+                .headers(makeHeader())
+                .body(customer);
+    }
+
+    @PatchMapping("")
+    public ResponseEntity<Customer> modify(@Validated @RequestBody CustomerDto resource){
+        Customer customer = customerApiService.modify(resource);
         return ResponseEntity.ok()
                 .headers(makeHeader())
                 .body(customer);
