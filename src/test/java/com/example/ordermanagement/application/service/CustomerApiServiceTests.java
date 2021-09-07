@@ -157,10 +157,23 @@ class CustomerApiServiceTests {
                     .phoneNumber("010-0232-2324")
                     .build();
 
-            Customer customer = resource;
+            Customer createCustomer = Customer.builder()
+                    .seq(1L)
+                    .userId(resource.getUserId())
+                    .password(resource.getPassword())
+                    .name(customerDto.getName())
+                    .nickname(customerDto.getNickname())
+                    .birthday(LocalDate.of(2000,12,23))
+                    .email(customerDto.getEmail())
+                    .address(customerDto.getAddress())
+                    .phoneNumber(customerDto.getPhoneNumber())
+                    .role(resource.getRole())
+                    .grade(resource.getGrade())
+                    .registeredAt(resource.getRegisteredAt())
+                    .build();
 
-            given(customerApiRepository.save(resource)).willReturn(customer);
-            customerApiService.modify(customerDto);
+            given(customerApiRepository.save(any())).willReturn(createCustomer);
+            Customer customer = customerApiService.modify(customerDto);
 
             Assertions.assertEquals(customer.getName(),customerDto.getName());
             Assertions.assertEquals(customer.getNickname(),customerDto.getNickname());
