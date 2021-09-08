@@ -18,6 +18,27 @@
 - email은 xxx@xxxx.xxx 형식을 지킨다. - 이메일 인증 확인
 - 잘못된 정보는 메세지와 함께 응답을 보낸다.
 
+##### 사용자 API 요청
+JSON 정보 예시 )
+    {"userId": "test1asd23",
+    "password": "asdfg1234",
+    "name": "홍길동",
+    "nickname": "길동이",
+    "birthday": "2010-02-13",
+    "phoneNumber": "010-1234-1454",
+    "email": "tsefgt@naver.com",
+    "address": "경기도 수원시",
+    "grade": "BRONZE",
+    "role": 1,
+    "registeredAt": "2020-08-23"}
+
+- (GET) http://localhost:8080/customer/{seq} : 사용자 정보 요청
+- (GET) http://localhost:8080/customer/all : 사용자 모든 정보 요청
+- (POST) http://localhost:8080/customer : 사용자 정보 생성
+- (PATCH) http://localhost:8080/customer : 사용자 정보 수정 
+  : (name,nickname,birthday,phoneNumber,email,address 만 가능)
+- (DELETE) http://localhost:8080/customer/{seq} : 사용자 정보 삭제
+
 ### 운영방안
 
 - 간단한 디자인으로 만들어진 front에 RestAPI를 만든다.

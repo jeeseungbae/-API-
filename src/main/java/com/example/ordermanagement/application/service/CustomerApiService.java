@@ -35,6 +35,16 @@ public class CustomerApiService {
         return customerApiRepository.save(customer);
     }
 
+    public Customer create(Customer customer){
+        duplicateCheckUserId(customer);
+        return customerApiRepository.save(customer);
+    }
+
+    public void deleteBySeq(Long seq){
+        Customer customer = findBySeq(seq);
+        customerApiRepository.delete(customer);
+    }
+
     private Customer changeData(CustomerDto resource){
         Customer customer = findBySeq(resource.getSeq());
         return changeName(customer,resource);
@@ -91,11 +101,6 @@ public class CustomerApiService {
                 .role(customer.getRole())
                 .grade(customer.getGrade())
                 .build();
-    }
-
-    public Customer create(Customer customer){
-        duplicateCheckUserId(customer);
-        return customerApiRepository.save(customer);
     }
 
     private void duplicateCheckUserId(Customer customer){
