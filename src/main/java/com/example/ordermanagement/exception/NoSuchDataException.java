@@ -1,7 +1,5 @@
 package com.example.ordermanagement.exception;
 
-import lombok.Getter;
-
 import java.util.NoSuchElementException;
 
 public class NoSuchDataException extends NoSuchElementException {

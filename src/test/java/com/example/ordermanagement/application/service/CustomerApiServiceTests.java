@@ -3,6 +3,7 @@ package com.example.ordermanagement.application.service;
 import com.example.ordermanagement.domain.model.entity.Customer;
 import com.example.ordermanagement.domain.model.entity.CustomerDto;
 import com.example.ordermanagement.domain.model.enumClass.GradeStatus;
+import com.example.ordermanagement.exception.NoSuchDataException;
 import com.example.ordermanagement.persistance.repository.CustomerApiRepository;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -11,15 +12,13 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.dao.DuplicateKeyException;
 
-import javax.validation.ConstraintViolationException;
 import java.time.LocalDate;
 import java.util.NoSuchElementException;
 import java.util.concurrent.TimeUnit;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class CustomerApiServiceTests {
@@ -146,7 +145,6 @@ class CustomerApiServiceTests {
         @DisplayName("성공 : 단일 정보를 수정")
         public void modifySuccess(){
             given(customerApiRepository.findBySeq(1L)).willReturn(java.util.Optional.ofNullable(resource));
-
             CustomerDto customerDto = CustomerDto.builder()
                     .seq(1L)
                     .name("swer123")
@@ -185,7 +183,7 @@ class CustomerApiServiceTests {
         }
 
         @Test
-        @DisplayName("성공 : 정보 없이 변경 가능")
+        @DisplayName("성공 : 일부 정보가 없으면 기존에 값을 대입하여 수정")
         public void failModifyInput(){
             given(customerApiRepository.findBySeq(1L)).willReturn(java.util.Optional.ofNullable(resource));
 
@@ -203,6 +201,28 @@ class CustomerApiServiceTests {
             customerApiService.modify(customerDto);
 
             verify(customerApiRepository).save(any());
+        }
+    }
+
+    @Nested
+    @DisplayName("정보를 삭제한다.")
+    public class Delete{
+        @Test
+        @DisplayName("성공 : 정보 삭제")
+        public void deleteData(){
+            given(customerApiRepository.findBySeq(1L)).willReturn(java.util.Optional.ofNullable(resource));
+            Customer customer = customerApiService.findBySeq(1L);
+            customerApiService.deleteBySeq(1L);
+            verify(customerApiRepository,times(2)).findBySeq(1L);
+            verify(customerApiRepository).delete(customer);
+        }
+
+        @Test
+        @DisplayName("실패 : 잘못된 요청 정보 삭제")
+        public void deleteDataFail(){
+            given(customerApiRepository.findBySeq(5L)).willThrow(new NoSuchDataException(5L));
+            Assertions.assertThrows(NoSuchElementException.class,()->
+                    customerApiService.deleteBySeq(5L));
         }
     }
 }

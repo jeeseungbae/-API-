@@ -1,7 +1,6 @@
 package com.example.ordermanagement.persistance.repository;
 
 import com.example.ordermanagement.domain.model.entity.Customer;
-import com.example.ordermanagement.domain.model.entity.CustomerDto;
 import com.example.ordermanagement.domain.model.enumClass.GradeStatus;
 import com.example.ordermanagement.exception.NoSuchDataException;
 import org.junit.jupiter.api.Assertions;
@@ -9,9 +8,11 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.dao.EmptyResultDataAccessException;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @DataJpaTest
 class CustomerApiRepositoryTests {
@@ -96,5 +97,16 @@ class CustomerApiRepositoryTests {
         Assertions.assertEquals(createCustomer.getEmail(),customerStore.getEmail());
         Assertions.assertEquals(createCustomer.getAddress(),customerStore.getAddress());
         Assertions.assertEquals(createCustomer.getPhoneNumber(),customerStore.getPhoneNumber());
+    }
+    @Test
+    @DisplayName("요청한 정보를 삭제한다.")
+    public void deleteSuccess(){
+        Optional<Customer> customer = customerApiRepository.findBySeq(1L);
+        Assertions.assertTrue(customer.isPresent());
+        customer.ifPresent(select->{
+            customerApiRepository.delete(select);
+        });
+        Optional<Customer> deleteCustomer = customerApiRepository.findBySeq(1L);
+        Assertions.assertFalse(deleteCustomer.isPresent());
     }
 }

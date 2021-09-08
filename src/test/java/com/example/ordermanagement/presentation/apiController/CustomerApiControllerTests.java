@@ -3,28 +3,24 @@ package com.example.ordermanagement.presentation.apiController;
 import com.example.ordermanagement.application.service.CustomerApiService;
 import com.example.ordermanagement.domain.model.entity.Customer;
 import com.example.ordermanagement.domain.model.enumClass.GradeStatus;
-import com.example.ordermanagement.presentation.optionAdvice.ErrorHandler;
+import com.example.ordermanagement.exception.NoSuchDataException;
 import org.junit.jupiter.api.*;
 
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import javax.validation.ConstraintViolationException;
-import javax.xml.bind.ValidationException;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -110,7 +106,7 @@ class CustomerApiControllerTests {
                                     "\"birthday\":\"2012-05-23\",\"phoneNumber\":\"010-0110-0220\"," +
                                     "\"email\":\"aws@naver.com\",\"address\":\"서울 마포구\"," +
                                     "\"grade\":\"BRONZE\",\"role\":2}"))
-                    .andExpect(status().is2xxSuccessful())
+                    .andExpect(status().isCreated())
                     .andExpect(content().string(
                             containsString("\"name\":\"aws동\"")))
                     .andExpect(content().string(
@@ -544,6 +540,27 @@ class CustomerApiControllerTests {
                     .andExpect(status().is2xxSuccessful())
                     .andExpect(content().string(
                             containsString("\"name\":\"aws동sss\"")));
+        }
+    }
+
+    @Nested
+    @DisplayName("정보를 삭제한다.")
+    public class Delete{
+        @Test
+        @DisplayName("성공 : 단일 정보 삭제")
+        public void deleteSuccess() throws Exception {
+            mockMvc.perform(delete("/customer/1"))
+                    .andExpect(status().isAccepted());
+            verify(customerApiService).deleteBySeq(1L);
+        }
+
+        @Test
+        @DisplayName("성공 : 없는 정보 입력")
+        public void deleteFailData() throws Exception {
+            doThrow(new NoSuchDataException(5L)).when(customerApiService).deleteBySeq(5L);
+            mockMvc.perform(delete("/customer/5"))
+                    .andExpect(status().is4xxClientError());
+            verify(customerApiService).deleteBySeq(5L);
         }
     }
 }

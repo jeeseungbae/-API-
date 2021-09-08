@@ -21,5 +21,4 @@ public interface CustomerApiRepository extends JpaRepository<Customer,Long> {
     Optional<Customer> findByPhoneNumber(String phoneNumber);
 
     List<Customer> findAll();
-
 }
