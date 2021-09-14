@@ -35,7 +35,8 @@
 [기획_노션](https://www.notion.so/API-f69af0f2826a46e9a6368063e670b1fe)
 
 ### 디자인 방식 - 화면 설계
-[화면설계](https://ovenapp.io/view/cjwQnaeNnxC3CdwgsHwzedVLXIa1xCdU/)
+[화면설계](https://ovenapp.io/view/cjwQnaeNnxC3CdwgsHwzedVLXIa1xCdU/) 
+<br>
 ![화면설계이미지](image/화면설계png.png)
 
 ### RestAPI
