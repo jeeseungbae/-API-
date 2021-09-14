@@ -34,6 +34,9 @@ Git Flow를 사용하여 브랜치를 관리한다.
 
 ### 데이터 베이스 설계
 [데이터베이스](https://www.erdcloud.com/p/zMWLrNEfYetdZqaLd)
+<br><br>
+
+![화면설계이미지](image/데이터베이스설계.png)
 
 ### 연동 방식
 - H2 database에 연동한다.
@@ -43,7 +46,7 @@ Git Flow를 사용하여 브랜치를 관리한다.
 
 ### 디자인 방식 - 화면 설계
 [화면설계](https://ovenapp.io/view/cjwQnaeNnxC3CdwgsHwzedVLXIa1xCdU/) 
-<br>
+<br><br>
 ![화면설계이미지](image/화면설계png.png)
 
 ### RestAPI
