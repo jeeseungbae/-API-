@@ -1,13 +1,11 @@
 # 주문관리 API 서비스 개발 (only Backend)
 
 ### 기술스텍
-
 - java 8
 - springBoot 2.x
 - JPA
 - gradle
 - Junit 5
-
 <br>
 
 ### 요구사항
@@ -53,7 +51,6 @@ JSON 정보 예시 )
 [데이터베이스](https://www.erdcloud.com/p/zMWLrNEfYetdZqaLd)
 
 ### 연동 방식
-
 - H2 database에 연동한다.
 
 #### 그 외
@@ -61,26 +58,6 @@ JSON 정보 예시 )
 [기획_노션](https://www.notion.so/API-f69af0f2826a46e9a6368063e670b1fe)
 
 
-### 디자인 방식
+### 디자인 방식 - 화면 설계
 
-<br>
-
-#### 메인화면
-
-![메인화면](./image/front메인화면.png)
-
-#### category세부사항
-
-![category세부사항](./image/category세부사항.png)
-
-#### 작품세부사항
-
-![작품세부사항](./image/작품세부사항.png)
-
-#### 제품검색
-
-![제품검색](./image/제품검색.png)
-
-#### 장바구니목록
-
-![장바구니목록](./image/장바구니목록.png)
+[화면설계](https://ovenapp.io/view/cjwQnaeNnxC3CdwgsHwzedVLXIa1xCdU/)
