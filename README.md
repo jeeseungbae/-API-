@@ -16,6 +16,29 @@
 - email은 xxx@xxxx.xxx 형식을 지킨다. - 이메일 인증 확인
 - 잘못된 정보는 메세지와 함께 응답을 보낸다.
 
+### 운영방안
+
+- 간단한 디자인으로 만들어진 front에 RestAPI를 만든다.
+- 평일 하루 2시간 이상 작업할 것
+
+### 서비스 개발 아이디어 노트
+
+어떤 식으로 서비스를 만들지에 대한 아이디어를 생각 날 때마다 기록한다.
+
+### 데이터 베이스 설계
+[데이터베이스](https://www.erdcloud.com/p/zMWLrNEfYetdZqaLd)
+
+### 연동 방식
+- H2 database에 연동한다.
+
+#### 그 외
+[기획_노션](https://www.notion.so/API-f69af0f2826a46e9a6368063e670b1fe)
+
+### 디자인 방식 - 화면 설계
+[화면설계](https://ovenapp.io/view/cjwQnaeNnxC3CdwgsHwzedVLXIa1xCdU/)
+![화면설계이미지](image/화면설계png.png)
+
+### RestAPI
 ##### 사용자 API 요청
 JSON 정보 예시 )
 
@@ -34,30 +57,6 @@ JSON 정보 예시 )
 - (GET) http://localhost:8080/customer/{seq} : 사용자 정보 요청
 - (GET) http://localhost:8080/customer/all : 사용자 모든 정보 요청
 - (POST) http://localhost:8080/customer : 사용자 정보 생성
-- (PATCH) http://localhost:8080/customer : 사용자 정보 수정 
-  : (name,nickname,birthday,phoneNumber,email,address 만 가능)
+- (PATCH) http://localhost:8080/customer : 사용자 정보 수정
+  : (이름,닉네임,생년월일,전화번호,이메일,주소 만 가능)
 - (DELETE) http://localhost:8080/customer/{seq} : 사용자 정보 삭제
-
-### 운영방안
-
-- 간단한 디자인으로 만들어진 front에 RestAPI를 만든다.
-- 평일 하루 2시간 이상 작업할 것
-
-### 서비스 개발 아이디어 노트
-
-어떤 식으로 서비스를 만들지에 대한 아이디어를 생각 날 때마다 기록한다.
-
-### 데이터 베이스 설계
-[데이터베이스](https://www.erdcloud.com/p/zMWLrNEfYetdZqaLd)
-
-### 연동 방식
-- H2 database에 연동한다.
-
-#### 그 외
-
-[기획_노션](https://www.notion.so/API-f69af0f2826a46e9a6368063e670b1fe)
-
-
-### 디자인 방식 - 화면 설계
-
-[화면설계](https://ovenapp.io/view/cjwQnaeNnxC3CdwgsHwzedVLXIa1xCdU/)
