@@ -1,6 +1,7 @@
 package com.example.ordermanagement.presentation.optionAdvice;
 
 import com.example.ordermanagement.exception.NoSuchDataException;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -24,5 +25,12 @@ public class ErrorHandler {
     @ExceptionHandler(ConstraintViolationException.class)
     public String handleValid(ConstraintViolationException error){
         return error.getConstraintViolations().toString();
+    }
+
+    @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(DuplicateKeyException.class)
+    public String handleValid(DuplicateKeyException error){
+        return error.getMessage();
     }
 }

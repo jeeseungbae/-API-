@@ -8,6 +8,7 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Iterator;
 import java.util.List;
 
 
@@ -36,7 +37,8 @@ public class CustomerApiService {
     }
 
     public Customer create(Customer customer){
-        duplicateCheckUserId(customer);
+        List<Customer> customers = customerApiRepository.findAll();
+        duplicateCheckCustomer(customer,customers.iterator());
         return customerApiRepository.save(customer);
     }
 
@@ -103,27 +105,21 @@ public class CustomerApiService {
                 .build();
     }
 
-    private void duplicateCheckUserId(Customer customer){
-        if(customerApiRepository.findByUserId(customer.getUserId()).isPresent()){
-            throw new DuplicateKeyException("이미 존재하는 아이디입니다.");
-        }
-        duplicateCheckNickname(customer);
-    }
-    private void duplicateCheckNickname(Customer customer){
-        if(customerApiRepository.findByNickname(customer.getNickname()).isPresent()){
-            throw new DuplicateKeyException("이미 존재하는 닉네임입니다.");
-        }
-        duplicateCheckPhoneNumber(customer);
-    }
-    private void duplicateCheckPhoneNumber(Customer customer){
-        if(customerApiRepository.findByPhoneNumber(customer.getPhoneNumber()).isPresent()){
-            throw new DuplicateKeyException("이미 존재하는 전화번호입니다.");
-        }
-        duplicateCheckEmail(customer);
-    }
-    private void duplicateCheckEmail(Customer customer){
-        if(customerApiRepository.findByEmail(customer.getEmail()).isPresent()){
-            throw new DuplicateKeyException("이미 존재하는 이메일입니다.");
+    private void duplicateCheckCustomer(Customer customer, Iterator<Customer> customers){
+        while(customers.hasNext()){
+            Customer user = customers.next();
+            if(user.getUserId().equals(customer.getUserId())){
+                throw new DuplicateKeyException("이미 존재하는 아이디 입니다.");
+            }
+            if(user.getNickname().equals(customer.getNickname())){
+                throw new DuplicateKeyException("이미 존재하는 닉네임입니다.");
+            }
+            if(user.getPhoneNumber().equals(customer.getPhoneNumber())){
+                throw new DuplicateKeyException("이미 존재하는 전화번호입니다.");
+            }
+            if(user.getEmail().equals(customer.getEmail())){
+                throw new DuplicateKeyException("이미 존재하는 이메일입니다.");
+            }
         }
     }
 }
