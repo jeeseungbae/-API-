@@ -83,7 +83,7 @@ class CustomerApiControllerTests {
         @Test
         @DisplayName("성공 : 모든 정보 조회")
         public void findAll() throws Exception {
-            mockMvc.perform(get("/customer/all"))
+            mockMvc.perform(get("/customers"))
                     .andExpect(status().is2xxSuccessful())
                     .andExpect(header().string("Content-Type",MediaType.APPLICATION_JSON_UTF8_VALUE))
                     .andExpect(header().exists("TimeStamp"))
