@@ -8,6 +8,7 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Iterator;
 import java.util.List;
 
 
@@ -26,6 +27,7 @@ public class CustomerApiService {
                 .orElseThrow(()->new NoSuchDataException(seq));
     }
 
+    @Transactional(readOnly = true)
     public List<Customer> findAll(){
         return customerApiRepository.findAll();
     }
@@ -36,56 +38,48 @@ public class CustomerApiService {
     }
 
     public Customer create(Customer customer){
-        duplicateCheckUserId(customer);
+        List<Customer> customers = customerApiRepository.findAll();
+        duplicateCheckCustomer(customer,customers.iterator());
         return customerApiRepository.save(customer);
     }
 
     public void deleteBySeq(Long seq){
-        Customer customer = findBySeq(seq);
-        customerApiRepository.delete(customer);
+        customerApiRepository.deleteById(seq);
     }
 
     private Customer changeData(CustomerDto resource){
         Customer customer = findBySeq(resource.getSeq());
-        return changeName(customer,resource);
+        return checkDataSame(customer,resource);
     }
 
-    private Customer changeName(Customer customer, CustomerDto resource){
+    private Customer checkDataSame(Customer customer, CustomerDto resource){
         if(resource.getName().isEmpty()){
             resource.setName(customer.getName());
         }
-        return changeNickName(customer,resource);
-    }
-    private Customer changeNickName(Customer customer, CustomerDto resource){
+
         if(resource.getNickname().isEmpty()){
             resource.setNickname(customer.getNickname());
         }
-        return changeBirthday(customer,resource);
-    }
-    private Customer changeBirthday(Customer customer, CustomerDto resource){
+
         if(resource.getBirthday()==null){
             resource.setBirthday(customer.getBirthday());
         }
-        return changeEmail(customer,resource);
-    }
-    private Customer changeEmail(Customer customer, CustomerDto resource){
+
         if(resource.getEmail().isEmpty()){
             resource.setEmail(customer.getEmail());
         }
-        return changeAddress(customer,resource);
-    }
-    private Customer changeAddress(Customer customer, CustomerDto resource){
+
         if(resource.getAddress().isEmpty()){
             resource.setAddress(customer.getAddress());
         }
-        return changePhoneNumber(customer,resource);
-    }
-    private Customer changePhoneNumber(Customer customer, CustomerDto resource){
+
         if(resource.getPhoneNumber().isEmpty()){
             resource.setPhoneNumber(customer.getPhoneNumber());
         }
+
         return changeCustomer(customer,resource);
     }
+
     private Customer changeCustomer(Customer customer, CustomerDto resource){
         return Customer.builder()
                 .seq(customer.getSeq())
@@ -103,26 +97,24 @@ public class CustomerApiService {
                 .build();
     }
 
-    private void duplicateCheckUserId(Customer customer){
-        if(customerApiRepository.findByUserId(customer.getUserId()).isPresent()){
-            throw new DuplicateKeyException("이미 존재하는 아이디입니다.");
+    private void duplicateCheckCustomer(Customer customer, Iterator<Customer> customers){
+        while(customers.hasNext()){
+            Customer user = customers.next();
+            checkDuplicate(user,customer);
         }
-        duplicateCheckNickname(customer);
     }
-    private void duplicateCheckNickname(Customer customer){
-        if(customerApiRepository.findByNickname(customer.getNickname()).isPresent()){
+
+    private void checkDuplicate(Customer user, Customer customer){
+        if(user.getUserId().equals(customer.getUserId())){
+            throw new DuplicateKeyException("이미 존재하는 아이디 입니다.");
+        }
+        if(user.getNickname().equals(customer.getNickname())){
             throw new DuplicateKeyException("이미 존재하는 닉네임입니다.");
         }
-        duplicateCheckPhoneNumber(customer);
-    }
-    private void duplicateCheckPhoneNumber(Customer customer){
-        if(customerApiRepository.findByPhoneNumber(customer.getPhoneNumber()).isPresent()){
+        if(user.getPhoneNumber().equals(customer.getPhoneNumber())){
             throw new DuplicateKeyException("이미 존재하는 전화번호입니다.");
         }
-        duplicateCheckEmail(customer);
-    }
-    private void duplicateCheckEmail(Customer customer){
-        if(customerApiRepository.findByEmail(customer.getEmail()).isPresent()){
+        if(user.getEmail().equals(customer.getEmail())){
             throw new DuplicateKeyException("이미 존재하는 이메일입니다.");
         }
     }

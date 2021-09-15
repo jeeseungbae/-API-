@@ -12,13 +12,5 @@ public interface CustomerApiRepository extends JpaRepository<Customer,Long> {
 
     Optional<Customer> findBySeq(Long seq);
 
-    Optional<Customer> findByUserId(String id);
-
-    Optional<Customer> findByNickname(String nickname);
-
-    Optional<Customer> findByEmail(String email);
-
-    Optional<Customer> findByPhoneNumber(String phoneNumber);
-
     List<Customer> findAll();
 }

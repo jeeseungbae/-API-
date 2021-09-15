@@ -13,6 +13,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.dao.DuplicateKeyException;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.concurrent.TimeUnit;
 
@@ -103,7 +105,9 @@ class CustomerApiServiceTests {
             @Test
             @DisplayName("error : 아이디 중복")
             public void errorDuplicateUserId () {
-                given(customerApiRepository.findByUserId(resource.getUserId())).willThrow(new DuplicateKeyException(""));
+                List<Customer> customers = new ArrayList<>();
+                customers.add(resource);
+                given(customerApiRepository.findAll()).willReturn(customers);
 
                 Assertions.assertThrows(DuplicateKeyException.class,
                         () -> customerApiService.create(resource));
@@ -112,7 +116,9 @@ class CustomerApiServiceTests {
             @Test
             @DisplayName("error : 닉네임 중복")
             public void errorDuplicateNickname () {
-                given(customerApiRepository.findByNickname(resource.getNickname())).willThrow(new DuplicateKeyException(""));
+                List<Customer> customers = new ArrayList<>();
+                customers.add(resource);
+                given(customerApiRepository.findAll()).willReturn(customers);
 
                 Assertions.assertThrows(DuplicateKeyException.class,
                         () -> customerApiService.create(resource));
@@ -120,7 +126,9 @@ class CustomerApiServiceTests {
             @Test
             @DisplayName("error : 전화번호 중복")
             public void errorDuplicatePhoneNumber () {
-                given(customerApiRepository.findByPhoneNumber(resource.getPhoneNumber())).willThrow(new DuplicateKeyException(""));
+                List<Customer> customers = new ArrayList<>();
+                customers.add(resource);
+                given(customerApiRepository.findAll()).willReturn(customers);
 
                 Assertions.assertThrows(DuplicateKeyException.class,
                         () -> customerApiService.create(resource));
@@ -129,7 +137,9 @@ class CustomerApiServiceTests {
             @Test
             @DisplayName("error : 이메일 중복")
             public void errorDuplicateEmail() {
-                given(customerApiRepository.findByEmail(resource.getEmail())).willThrow(new DuplicateKeyException(""));
+                List<Customer> customers = new ArrayList<>();
+                customers.add(resource);
+                given(customerApiRepository.findAll()).willReturn(customers);
 
                 Assertions.assertThrows(DuplicateKeyException.class,
                         () -> customerApiService.create(resource));
