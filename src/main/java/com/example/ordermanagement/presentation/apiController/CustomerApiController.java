@@ -15,7 +15,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController()
-@RequestMapping("/customer")
 public class CustomerApiController {
 
     private final CustomerApiService customerApiService;
@@ -32,7 +31,7 @@ public class CustomerApiController {
         headers.add("TimeStamp",LocalDateTime.now().toString());
     }
 
-    @GetMapping("/all")
+    @GetMapping("/customers")
     public ResponseEntity<List<Customer>> findAll(){
         List<Customer> customers = customerApiService.findAll();
         return ResponseEntity.status(HttpStatus.OK)
@@ -40,7 +39,7 @@ public class CustomerApiController {
                 .body(customers);
     }
 
-    @GetMapping("/{seq}")
+    @GetMapping("/customer/{seq}")
     public ResponseEntity<Customer> findBySeq(@PathVariable Long seq){
         Customer customer = customerApiService.findBySeq(seq);
         return ResponseEntity.status(HttpStatus.OK)
@@ -48,7 +47,7 @@ public class CustomerApiController {
                 .body(customer);
     }
 
-    @PostMapping("")
+    @PostMapping("/customer")
     public ResponseEntity<Customer> create(@Validated @RequestBody Customer resource){
         Customer customer = customerApiService.create(resource);
         return ResponseEntity.status(HttpStatus.CREATED)
@@ -56,7 +55,7 @@ public class CustomerApiController {
                 .body(customer);
     }
 
-    @PatchMapping("")
+    @PatchMapping("/customer")
     public ResponseEntity<Customer> modify(@Validated @RequestBody CustomerDto resource){
         Customer customer = customerApiService.modify(resource);
         return ResponseEntity.status(HttpStatus.OK)
@@ -64,7 +63,7 @@ public class CustomerApiController {
                 .body(customer);
     }
 
-    @DeleteMapping("{seq}")
+    @DeleteMapping("/customer/{seq}")
     public ResponseEntity<String> deleteBySeq(@PathVariable Long seq){
         customerApiService.deleteBySeq(seq);
         return ResponseEntity.status(HttpStatus.ACCEPTED)

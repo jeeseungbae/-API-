@@ -66,7 +66,7 @@ JSON 정보 예시 )
     "registeredAt": "2020-08-23"}
 
 - (GET) http://localhost:8080/customer/{seq} : 사용자 정보 요청
-- (GET) http://localhost:8080/customer/all : 사용자 모든 정보 요청
+- (GET) http://localhost:8080/customers : 사용자 모든 정보 요청
 - (POST) http://localhost:8080/customer : 사용자 정보 생성
 - (PATCH) http://localhost:8080/customer : 사용자 정보 수정
   : (이름,닉네임,생년월일,전화번호,이메일,주소 만 가능)
