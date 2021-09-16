@@ -46,13 +46,12 @@ public class Customer {
     private LocalDate birthday;
 
     @NotBlank(message = "전화번호를 입력해주세요")
-    @Pattern(regexp = "^\\d{3}-\\d{3,4}-\\d{4}$"
+    @Pattern(regexp = "^01(?:0|1|[6-9])[-]?(\\d{3}|\\d{4})[-]?(\\d{4})$"
             ,message = "전화번호 형식에 맞게 작성해주세요(010-0000-0000)")
     private String phoneNumber;
 
     @NotBlank(message = "이메일을 입력해주세요")
-    @Pattern(regexp = "^[0-9a-zA-Z]([-_\\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\\.]?[0-9a-zA-Z])*\\.[a-zA-Z]{2,3}$"
-            ,message = "이메일 형식에 맞게 작성해주세요")
+    @Email(message = "이메일 형식에 맞게 작성해주세요")
     private String email;
 
     @NotBlank(message = "주소를 입력해주세요")
