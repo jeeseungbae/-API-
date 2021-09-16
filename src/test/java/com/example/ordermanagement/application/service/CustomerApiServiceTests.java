@@ -11,6 +11,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.dao.EmptyResultDataAccessException;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -105,9 +106,7 @@ class CustomerApiServiceTests {
             @Test
             @DisplayName("error : 아이디 중복")
             public void errorDuplicateUserId () {
-                List<Customer> customers = new ArrayList<>();
-                customers.add(resource);
-                given(customerApiRepository.findAll()).willReturn(customers);
+                given(customerApiRepository.checkExists(resource)).willReturn(java.util.Optional.ofNullable(resource));
 
                 Assertions.assertThrows(DuplicateKeyException.class,
                         () -> customerApiService.create(resource));
@@ -116,9 +115,7 @@ class CustomerApiServiceTests {
             @Test
             @DisplayName("error : 닉네임 중복")
             public void errorDuplicateNickname () {
-                List<Customer> customers = new ArrayList<>();
-                customers.add(resource);
-                given(customerApiRepository.findAll()).willReturn(customers);
+                given(customerApiRepository.checkExists(resource)).willReturn(java.util.Optional.ofNullable(resource));
 
                 Assertions.assertThrows(DuplicateKeyException.class,
                         () -> customerApiService.create(resource));
@@ -126,9 +123,7 @@ class CustomerApiServiceTests {
             @Test
             @DisplayName("error : 전화번호 중복")
             public void errorDuplicatePhoneNumber () {
-                List<Customer> customers = new ArrayList<>();
-                customers.add(resource);
-                given(customerApiRepository.findAll()).willReturn(customers);
+                given(customerApiRepository.checkExists(resource)).willReturn(java.util.Optional.ofNullable(resource));
 
                 Assertions.assertThrows(DuplicateKeyException.class,
                         () -> customerApiService.create(resource));
@@ -137,9 +132,7 @@ class CustomerApiServiceTests {
             @Test
             @DisplayName("error : 이메일 중복")
             public void errorDuplicateEmail() {
-                List<Customer> customers = new ArrayList<>();
-                customers.add(resource);
-                given(customerApiRepository.findAll()).willReturn(customers);
+                given(customerApiRepository.checkExists(resource)).willReturn(java.util.Optional.ofNullable(resource));
 
                 Assertions.assertThrows(DuplicateKeyException.class,
                         () -> customerApiService.create(resource));
@@ -220,18 +213,15 @@ class CustomerApiServiceTests {
         @Test
         @DisplayName("성공 : 정보 삭제")
         public void deleteData(){
-            given(customerApiRepository.findBySeq(1L)).willReturn(java.util.Optional.ofNullable(resource));
-            Customer customer = customerApiService.findBySeq(1L);
             customerApiService.deleteBySeq(1L);
-            verify(customerApiRepository,times(2)).findBySeq(1L);
-            verify(customerApiRepository).delete(customer);
+            verify(customerApiRepository).deleteById(1L);
         }
 
         @Test
         @DisplayName("실패 : 잘못된 요청 정보 삭제")
         public void deleteDataFail(){
-            given(customerApiRepository.findBySeq(5L)).willThrow(new NoSuchDataException(5L));
-            Assertions.assertThrows(NoSuchElementException.class,()->
+            doThrow(new EmptyResultDataAccessException(1)).when(customerApiRepository).deleteById(5L);
+            Assertions.assertThrows(EmptyResultDataAccessException.class,()->
                     customerApiService.deleteBySeq(5L));
         }
     }

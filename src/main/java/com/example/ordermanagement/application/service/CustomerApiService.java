@@ -8,8 +8,8 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -36,17 +36,6 @@ public class CustomerApiService {
         Customer customer = changeData(resource);
         return customerApiRepository.save(customer);
     }
-
-    public Customer create(Customer customer){
-        List<Customer> customers = customerApiRepository.findAll();
-        duplicateCheckCustomer(customer,customers.iterator());
-        return customerApiRepository.save(customer);
-    }
-
-    public void deleteBySeq(Long seq){
-        customerApiRepository.deleteById(seq);
-    }
-
     private Customer changeData(CustomerDto resource){
         Customer customer = findBySeq(resource.getSeq());
         return checkDataSame(customer,resource);
@@ -97,14 +86,15 @@ public class CustomerApiService {
                 .build();
     }
 
-    private void duplicateCheckCustomer(Customer customer, Iterator<Customer> customers){
-        while(customers.hasNext()){
-            Customer user = customers.next();
-            checkDuplicate(user,customer);
-        }
+    public Customer create(Customer customer){
+        Optional<Customer> resource = customerApiRepository.checkExists(customer);
+        resource.ifPresent(select->{
+            responseException(select,customer);
+        });
+        return customerApiRepository.save(customer);
     }
 
-    private void checkDuplicate(Customer user, Customer customer){
+    private void responseException(Customer user, Customer customer){
         if(user.getUserId().equals(customer.getUserId())){
             throw new DuplicateKeyException("이미 존재하는 아이디 입니다.");
         }
@@ -117,5 +107,9 @@ public class CustomerApiService {
         if(user.getEmail().equals(customer.getEmail())){
             throw new DuplicateKeyException("이미 존재하는 이메일입니다.");
         }
+    }
+
+    public void deleteBySeq(Long seq){
+        customerApiRepository.deleteById(seq);
     }
 }
