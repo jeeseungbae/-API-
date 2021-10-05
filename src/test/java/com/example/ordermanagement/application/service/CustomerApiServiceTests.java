@@ -3,7 +3,6 @@ package com.example.ordermanagement.application.service;
 import com.example.ordermanagement.domain.model.entity.Customer;
 import com.example.ordermanagement.domain.model.entity.CustomerDto;
 import com.example.ordermanagement.domain.model.enumClass.GradeStatus;
-import com.example.ordermanagement.exception.NoSuchDataException;
 import com.example.ordermanagement.persistance.repository.CustomerApiRepository;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,8 +13,6 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.concurrent.TimeUnit;
 

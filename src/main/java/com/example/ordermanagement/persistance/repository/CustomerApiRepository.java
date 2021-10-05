@@ -16,12 +16,6 @@ public interface CustomerApiRepository extends JpaRepository<Customer,Long> {
 
     List<Customer> findAll();
 
-    /**
-     * exist 코드 작성 필요
-     */
-//    @Query(value = "SELECT c FROM Customer c where c.userId = :#{#customer.userId}")
-//    Optional<Customer> checkExists(@Param("customer")Customer customer);
-
     @Query(value = "SELECT * FROM customer "+
             "WHERE user_id = :#{#customer.userId} "+
             "or nickname = :#{#customer.nickname} "+
