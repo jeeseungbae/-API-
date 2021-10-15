@@ -39,7 +39,7 @@ public class CustomerApiController {
                 .body(customers);
     }
 
-    @GetMapping("/customer/{seq}")
+    @GetMapping("/customers/{seq}")
     public ResponseEntity<Customer> findBySeq(@PathVariable Long seq){
         Customer customer = customerApiService.findBySeq(seq);
         return ResponseEntity.status(HttpStatus.OK)
@@ -63,7 +63,7 @@ public class CustomerApiController {
                 .body(customer);
     }
 
-    @DeleteMapping("/customer/{seq}")
+    @DeleteMapping("/customers/{seq}")
     public ResponseEntity<String> deleteBySeq(@PathVariable Long seq){
         customerApiService.deleteBySeq(seq);
         return ResponseEntity.status(HttpStatus.ACCEPTED)
