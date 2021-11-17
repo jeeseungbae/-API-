@@ -47,7 +47,7 @@ public class CustomerApiController {
                 .body(customer);
     }
 
-    @PostMapping("/customer")
+    @PostMapping("/customers")
     public ResponseEntity<Customer> create(@Validated @RequestBody Customer resource){
         Customer customer = customerApiService.create(resource);
         return ResponseEntity.status(HttpStatus.CREATED)
@@ -55,7 +55,7 @@ public class CustomerApiController {
                 .body(customer);
     }
 
-    @PatchMapping("/customer")
+    @PatchMapping("/customers")
     public ResponseEntity<Customer> modify(@Validated @RequestBody CustomerDto resource){
         Customer customer = customerApiService.modify(resource);
         return ResponseEntity.status(HttpStatus.OK)
