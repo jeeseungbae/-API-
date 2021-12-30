@@ -1,4 +1,4 @@
-# 주문관리 API 서비스 개발 (only Backend)
+# RestAPI - 연습
 
 ### 기술스텍
 - java 8
@@ -7,8 +7,6 @@
 - gradle
 - Junit 5
 <br>
-
-[기획](https://tide-pyjama-42a.notion.site/API-f69af0f2826a46e9a6368063e670b1fe)
 
 ### 브랜치 전략
 Git Flow를 사용하여 브랜치를 관리한다. 
@@ -42,9 +40,6 @@ Git Flow를 사용하여 브랜치를 관리한다.
 
 ### 연동 방식
 - H2 database에 연동한다.
-
-#### 그 외
-[기획_노션](https://www.notion.so/API-f69af0f2826a46e9a6368063e670b1fe)
 
 ### 디자인 방식 - 화면 설계
 [화면설계](https://ovenapp.io/view/cjwQnaeNnxC3CdwgsHwzedVLXIa1xCdU/) 
